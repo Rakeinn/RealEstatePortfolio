@@ -1,0 +1,73 @@
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using RealEstatePortfolio.Models.Entities;
+using System.Text;
+
+namespace RealEstatePortfolio.Data
+{
+    public static partial class DbInitializer
+    {
+        public static async Task InitializeAsync(
+            ApplicationDbContext context, 
+            UserManager<ApplicationUser> userManager, 
+            RoleManager<IdentityRole> roleManager,
+            IWebHostEnvironment env)
+        {
+            await context.Database.EnsureCreatedAsync();
+
+            await SeedRolesAndUsersAsync(userManager, roleManager);
+            GeneratePlaceholderAssets(env.WebRootPath);
+            await SeedPageContentsAsync(context);
+            await SeedBuildingsAsync(context);
+            await SeedContactLeadsAsync(context);
+        }
+
+        private static async Task SeedRolesAndUsersAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        {
+            string[] roles = { "Admin", "Editor" };
+            foreach (var role in roles)
+            {
+                if (!await roleManager.RoleExistsAsync(role))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
+
+            var adminEmail = "admin@realestate.com";
+            var adminUser = await userManager.FindByEmailAsync(adminEmail);
+            if (adminUser == null)
+            {
+                adminUser = new ApplicationUser
+                {
+                    UserName = adminEmail,
+                    Email = adminEmail,
+                    FullName = "Master Administrator",
+                    EmailConfirmed = true
+                };
+                var result = await userManager.CreateAsync(adminUser, "Admin@123456!");
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(adminUser, "Admin");
+                }
+            }
+
+            var editorEmail = "editor@realestate.com";
+            var editorUser = await userManager.FindByEmailAsync(editorEmail);
+            if (editorUser == null)
+            {
+                editorUser = new ApplicationUser
+                {
+                    UserName = editorEmail,
+                    Email = editorEmail,
+                    FullName = "Senior Portfolio Editor",
+                    EmailConfirmed = true
+                };
+                var result = await userManager.CreateAsync(editorUser, "Editor@123456!");
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(editorUser, "Editor");
+                }
+            }
+        }
+    }
+}

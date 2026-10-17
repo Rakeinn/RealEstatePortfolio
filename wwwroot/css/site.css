@@ -1,0 +1,271 @@
+﻿/* ==========================================================================
+   ESTATE LUXE - Architectural Studio Theme & Bespoke Styling
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..800;1,400..800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, "Times New Roman", serif;
+  
+  --gold-300: #e6ca9e;
+  --gold-400: #d4af37;
+  --gold-500: #c5a880;
+  --gold-600: #a8885c;
+  
+  --primary-accent: #0284c7;
+  --primary-hover: #0369a1;
+  --card-radius: 1.125rem;
+  --btn-radius: 50rem;
+  --transition-smooth: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+[data-bs-theme="dark"] {
+  --bg-body: #090d16;
+  --bg-surface: #0f172a;
+  --bg-card: #141e33;
+  --bg-card-hover: #1a2742;
+  --bg-glass: rgba(11, 15, 25, 0.85);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-focus: rgba(197, 168, 128, 0.45);
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --accent-badge-bg: rgba(197, 168, 128, 0.12);
+  --accent-badge-text: #e6ca9e;
+  --skeleton-base: #131d31;
+  --skeleton-highlight: #1e2c47;
+}
+
+[data-bs-theme="light"] {
+  --bg-body: #f8fafc;
+  --bg-surface: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-card-hover: #ffffff;
+  --bg-glass: rgba(255, 255, 255, 0.88);
+  --border-subtle: rgba(0, 0, 0, 0.08);
+  --border-focus: rgba(2, 132, 199, 0.4);
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --accent-badge-bg: rgba(2, 132, 199, 0.08);
+  --accent-badge-text: #0369a1;
+  --skeleton-base: #e2e8f0;
+  --skeleton-highlight: #f1f5f9;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, .font-serif, .editorial-heading {
+  font-family: var(--font-serif);
+  letter-spacing: -0.02em;
+}
+
+.text-gold {
+  color: var(--gold-500) !important;
+}
+
+/* Glassmorphism Navigation */
+.glass-nav {
+  background: var(--bg-glass) !important;
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: var(--transition-smooth);
+}
+
+.nav-link {
+  font-size: 0.925rem;
+  font-weight: 500;
+  color: var(--text-muted) !important;
+  transition: var(--transition-smooth);
+  padding: 0.5rem 1rem !important;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--text-main) !important;
+}
+
+/* Cards & Surfaces */
+.glass-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--card-radius);
+  transition: var(--transition-smooth);
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-5px);
+  background: var(--bg-card-hover);
+  border-color: rgba(197, 168, 128, 0.3);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.25);
+}
+
+/* Badges */
+.badge-editorial {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.45rem 1rem;
+  border-radius: 50rem;
+  background: var(--accent-badge-bg);
+  color: var(--accent-badge-text);
+  border: 1px solid var(--border-subtle);
+}
+
+.badge-status-upcoming {
+  background-color: #f59e0b !important;
+  color: #000000 !important;
+  font-weight: 700;
+}
+
+.badge-status-ongoing {
+  background-color: #0284c7 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+.badge-status-completed {
+  background-color: #10b981 !important;
+  color: #ffffff !important;
+  font-weight: 600;
+}
+
+/* Hero Section */
+.hero-editorial {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background: radial-gradient(circle at 85% 25%, rgba(2, 132, 199, 0.12), transparent 50%),
+              radial-gradient(circle at 15% 75%, rgba(197, 168, 128, 0.08), transparent 45%);
+}
+
+/* Skeleton Loading Shimmer */
+.skeleton-loader {
+  background: linear-gradient(
+    90deg,
+    var(--skeleton-base) 0%,
+    var(--skeleton-highlight) 50%,
+    var(--skeleton-base) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 0.625rem;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.skeleton-card {
+  height: 400px;
+}
+
+/* Property Filter Chips */
+.filter-chip {
+  cursor: pointer;
+  transition: var(--transition-smooth);
+  user-select: none;
+  font-size: 0.825rem;
+  font-weight: 600;
+}
+
+.filter-chip.active {
+  background-color: var(--primary-accent) !important;
+  color: #ffffff !important;
+  border-color: var(--primary-accent) !important;
+}
+
+/* Swiper Carousels */
+.swiper-portfolio {
+  width: 100%;
+  height: 500px;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+}
+
+.swiper-thumbs-gallery {
+  height: 90px;
+  margin-top: 14px;
+}
+
+.swiper-thumbs-gallery .swiper-slide {
+  opacity: 0.4;
+  cursor: pointer;
+  border-radius: 0.625rem;
+  overflow: hidden;
+  transition: var(--transition-smooth);
+}
+
+.swiper-thumbs-gallery .swiper-slide-thumb-active {
+  opacity: 1;
+  border: 2px solid var(--gold-500);
+}
+
+/* Interactive Map Container */
+.map-container {
+  height: 420px;
+  width: 100%;
+  border-radius: var(--card-radius);
+  overflow: hidden;
+  z-index: 1;
+}
+
+.amenity-chip {
+  font-size: 0.8rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 50rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: var(--transition-smooth);
+}
+
+/* Admin Sidebar & Views */
+.admin-sidebar {
+  width: 270px;
+  min-height: 100vh;
+  border-right: 1px solid var(--border-subtle);
+  background: var(--bg-surface);
+}
+
+.admin-nav-link {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1.25rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  border-radius: 0.625rem;
+  margin: 0.15rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: var(--transition-smooth);
+}
+
+.admin-nav-link:hover, .admin-nav-link.active {
+  background: rgba(2, 132, 199, 0.12);
+  color: var(--primary-accent);
+}
+
+.sortable-ghost {
+  opacity: 0.35;
+  border: 2px dashed var(--primary-accent) !important;
+}
+
+.sortable-drag {
+  cursor: grabbing;
+}

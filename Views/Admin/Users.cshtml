@@ -1,0 +1,58 @@
+﻿@model List<RealEstatePortfolio.Controllers.AdminUserViewModel>
+
+@{
+    ViewData["Title"] = "Staff & Role Management";
+    Layout = "_AdminLayout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold mb-1">Staff Accounts & Access Roles</h4>
+        <p class="text-muted small mb-0">Role-based access control (Admin, Editor) for the portfolio management desk.</p>
+    </div>
+</div>
+
+<div class="glass-card p-4">
+    <div class="table-responsive">
+        <table class="table align-middle table-hover mb-0">
+            <thead>
+                <tr class="text-muted small text-uppercase">
+                    <th>Staff Name</th>
+                    <th>Email Address</th>
+                    <th>Assigned Roles</th>
+                    <th>Registered Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="p-2 rounded-circle bg-primary bg-opacity-10 text-primary">
+                                    <i class="bi bi-person-fill fs-5"></i>
+                                </div>
+                                <div>
+                                    <div class="fw-bold">@(user.FullName ?? user.UserName)</div>
+                                    <small class="text-muted">Username: @user.UserName</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>@user.Email</td>
+                        <td>
+                            @foreach (var role in user.Roles)
+                            {
+                                <span class="badge @(role == "Admin" ? "bg-danger" : "bg-info text-dark") me-1">@role</span>
+                            }
+                        </td>
+                        <td class="small text-muted">@user.CreatedAt.ToString("MMM dd, yyyy")</td>
+                        <td>
+                            <span class="badge bg-success bg-opacity-25 text-success"><i class="bi bi-check-circle me-1"></i>Active</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

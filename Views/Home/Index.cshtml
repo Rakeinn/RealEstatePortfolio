@@ -1,0 +1,252 @@
+@model RealEstatePortfolio.Models.ViewModels.HomeViewModel
+
+@{
+    ViewData["Title"] = "Recent Group | Premier Real Estate & Infrastructure in Bangladesh";
+    var heroBadge = Model.Content.GetValueOrDefault("Hero_Badge", "Recent Group • Better Lifestyle in Bangladesh");
+    var heroTitle = Model.Content.GetValueOrDefault("Hero_Title", "Thoughtfully Designed Homes & Iconic Spaces in Bangladesh");
+    var heroSubtitle = Model.Content.GetValueOrDefault("Hero_Subtitle", "Recent Group unites Recent Properties Ltd, Recent Living Ltd, and Recent Living Interior to create trusted residential apartments, commercial projects, and transparent joint ventures across Bangladesh.");
+    var heroCta = Model.Content.GetValueOrDefault("Hero_CTA_Text", "Explore Portfolio");
+    var aboutBadge = Model.Content.GetValueOrDefault("About_Badge", "Recent Living Ltd. • Better Lifestyle…");
+    var aboutTitle = Model.Content.GetValueOrDefault("About_Title", "A Trusted & Respected Real Estate Company in Bangladesh");
+    var aboutStory = Model.Content.GetValueOrDefault("About_Story", "<p><strong>Recent Living Ltd.</strong> (Tagline: <em>Better Lifestyle…</em>) is committed to becoming a trusted and respected real estate company in Bangladesh, creating thoughtfully designed homes and commercial spaces that enrich people\'s lives and contribute to better communities.</p><p>We envision a future where every project we develop reflects quality, trust, thoughtful design, and lasting value—creating places where people can truly enjoy a better lifestyle.</p>");
+}
+
+<!-- Editorial Hero Section -->
+<section class="hero-editorial py-5">
+    <div class="container py-lg-5">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-7" data-aos="fade-up" data-aos-duration="900">
+                <div class="d-inline-flex align-items-center gap-2 mb-3 px-3 py-1 rounded-pill bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 small fw-bold">
+                    <i class="bi bi-buildings"></i> Recent Group • Building Excellence in Bangladesh
+                </div>
+                <h1 class="display-3 fw-bold lh-sm mb-4 font-serif">
+                    @heroTitle
+                </h1>
+                <p class="lead text-muted mb-5 pe-lg-5" style="font-weight: 400; line-height: 1.7;">
+                    @heroSubtitle
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    <a asp-controller="Projects" asp-action="Index" class="btn btn-primary btn-lg rounded-pill px-4 py-3 shadow-sm d-flex align-items-center gap-2">
+                        <span>Explore Projects</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                    <a asp-controller="Home" asp-action="About" class="btn btn-outline-secondary btn-lg rounded-pill px-4 py-3">
+                        <span>About Recent Group</span>
+                    </a>
+                    <a href="#joint-venture" class="btn btn-outline-primary btn-lg rounded-pill px-4 py-3">
+                        <i class="bi bi-handshake me-1"></i>Joint Venture
+                    </a>
+                </div>
+            </div>
+
+            <div class="col-lg-5" data-aos="zoom-in" data-aos-delay="200" data-aos-duration="1000">
+                <div class="glass-card p-4 shadow-lg overflow-hidden position-relative text-center">
+                    <img src="/images/logo.png" alt="Recent Group Logo" class="img-fluid mb-4" style="max-height: 200px; object-fit: contain;" />
+                    <div class="border-top pt-3">
+                        <h4 class="fw-bold font-serif mb-1"><span class="text-primary">RECENT</span> <span class="text-success">GROUP</span></h4>
+                        <p class="text-muted small mb-3">Recent Properties Ltd &bull; Recent Living Ltd &bull; Recent Living Interior</p>
+                        <div class="d-flex justify-content-center gap-2">
+                            <span class="badge bg-body border text-muted small px-3 py-2">Dhaka, Bangladesh</span>
+                            <span class="badge bg-body border text-muted small px-3 py-2">Joint Ventures</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sister Concerns: Simple, Small & Informational (No Buttons or Functionality) -->
+<section id="sister-concerns" class="py-3 border-top border-bottom bg-body-tertiary">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+            <span class="text-muted small text-uppercase tracking-wider fw-semibold" style="font-size: 11px;">Our Sister Concerns</span>
+            <small class="text-muted" style="font-size: 11px;">Recent Group Subsidiaries</small>
+        </div>
+
+        <div class="row g-3">
+            <!-- 1. Recent Properties Ltd -->
+            <div class="col-md-4">
+                <div class="glass-card p-3 h-100 d-flex align-items-center gap-3">
+                    <span class="p-2 rounded-3 bg-body border text-primary fs-5 d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                        <i class="bi bi-building"></i>
+                    </span>
+                    <div>
+                        <h6 class="fw-bold mb-0" style="font-size: 14px;">Recent Properties Ltd</h6>
+                        <small class="text-muted" style="font-size: 12px;">Civil & Commercial High-Rises</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Recent Living Ltd -->
+            <div class="col-md-4">
+                <div class="glass-card p-3 h-100 d-flex align-items-center gap-3">
+                    <span class="p-2 rounded-3 bg-body border text-success fs-5 d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                        <i class="bi bi-houses"></i>
+                    </span>
+                    <div>
+                        <h6 class="fw-bold mb-0" style="font-size: 14px;">Recent Living Ltd.</h6>
+                        <small class="text-muted" style="font-size: 12px;">Residential Homes & Better Lifestyle</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Recent Living Interior -->
+            <div class="col-md-4">
+                <div class="glass-card p-3 h-100 d-flex align-items-center gap-3">
+                    <span class="p-2 rounded-3 bg-body border text-warning fs-5 d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                        <i class="bi bi-palette"></i>
+                    </span>
+                    <div>
+                        <h6 class="fw-bold mb-0" style="font-size: 14px;">Recent Living Interior</h6>
+                        <small class="text-muted" style="font-size: 12px;">Turnkey Interiors & Fit-Outs</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Curated Portfolio Highlights -->
+<section class="py-5 bg-body-tertiary border-top">
+    <div class="container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5" data-aos="fade-up">
+            <div>
+                <span class="badge-editorial mb-2">Featured Projects</span>
+                <h2 class="display-5 fw-bold mb-2 font-serif">Signature Developments</h2>
+                <p class="text-muted mb-0">Iconic residential, commercial, and mixed-use developments in prime locations across Dhaka.</p>
+            </div>
+            <div class="mt-3 mt-md-0">
+                <a asp-controller="Projects" asp-action="Index" class="btn btn-outline-primary rounded-pill px-4">
+                    View Complete Portfolio (@Model.TotalProjectsCount) <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var p in Model.FeaturedProjects)
+            {
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-duration="800">
+                    <div class="card h-100 glass-card glass-card-hover border-0 overflow-hidden d-flex flex-column">
+                        <div class="position-relative overflow-hidden" style="height: 250px;">
+                            <img src="@(p.PrimaryImage?.ImagePath ?? "/images/properties/lumina-1.svg")" alt="@p.Name" class="w-100 h-100 object-fit-cover" loading="lazy" />
+                            <div class="position-absolute top-0 start-0 m-3">
+                                <span class="badge badge-status-@(p.Status.ToString().ToLower()) shadow-sm">@p.Status</span>
+                            </div>
+                            @if (p.CompletionYear.HasValue)
+                            {
+                                <div class="position-absolute top-0 end-0 m-3">
+                                    <span class="badge bg-dark bg-opacity-75 text-white shadow-sm">Est. @p.CompletionYear</span>
+                                </div>
+                            }
+                        </div>
+
+                        <div class="card-body p-4 d-flex flex-column">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="badge bg-secondary bg-opacity-10 text-body border small">@(p.SisterConcern ?? "Recent Properties Ltd")</span>
+                                <span class="text-muted small">@(p.PropertyType ?? "Residential")</span>
+                            </div>
+
+                            <h5 class="card-title fw-bold font-serif mb-2 fs-5">
+                                <a asp-controller="Projects" asp-action="Details" asp-route-slug="@p.Slug" class="text-decoration-none text-body stretched-link">
+                                    @p.Name
+                                </a>
+                            </h5>
+                            <p class="text-muted small mb-3"><i class="bi bi-geo-alt me-1 text-primary"></i>@p.Address</p>
+
+                            @if (p.FeatureList.Any())
+                            {
+                                <div class="d-flex flex-wrap gap-1 mb-4">
+                                    @foreach (var feat in p.FeatureList.Take(3))
+                                    {
+                                        <span class="badge bg-secondary bg-opacity-10 text-body border border-secondary border-opacity-10 small fw-normal">@feat</span>
+                                    }
+                                </div>
+                            }
+
+                            <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="text-muted small d-block" style="font-size: 11px; text-transform: uppercase;">From</span>
+                                    <span class="fw-bold text-primary fs-5 font-serif">@(p.PriceStartingFrom.HasValue ? $"BDT {p.PriceStartingFrom:N0}" : "Price on Request")</span>
+                                </div>
+                                <span class="btn btn-outline-primary btn-sm rounded-circle p-2">
+                                    <i class="bi bi-chevron-right"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Joint Venture Section for Landowners -->
+<section id="joint-venture" class="py-5 border-top">
+    <div class="container py-lg-4">
+        <div class="glass-card p-4 p-lg-5 shadow-lg" data-aos="zoom-in">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-5">
+                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-1 fw-bold small mb-3">Joint Venture Opportunity</span>
+                    <h2 class="display-6 fw-bold mb-3 font-serif">Landowner Partnerships</h2>
+                    <p class="text-muted mb-4 lh-lg">
+                        At <strong>Recent Living Ltd.</strong>, we bring together landowners, investors, professionals, architects, and engineers to transform prime plots into successful real estate landmarks.
+                    </p>
+                    <div class="d-flex flex-column gap-3 text-muted small">
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="p-2 rounded-circle bg-success bg-opacity-10 text-success"><i class="bi bi-shield-check"></i></span>
+                            <span>Transparent and ethical Joint Venture agreements.</span>
+                        </div>
+                        <div class="d-flex align-items-center gap-3">
+                            <span class="p-2 rounded-circle bg-success bg-opacity-10 text-success"><i class="bi bi-clock-history"></i></span>
+                            <span>On-time project delivery with highest construction standards.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-7">
+                    <form class="ajax-inquiry-form">
+                        <input type="hidden" name="PreferredProjectSlug" value="joint-venture-inquiry" />
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Target Concern / Subsidiary</label>
+                                <select name="TargetedConcern" class="form-select rounded-3 py-2">
+                                    <option value="Recent Living Ltd" selected>Recent Living Ltd. (Residential & Joint Ventures)</option>
+                                    <option value="Recent Properties Ltd">Recent Properties Ltd (Commercial & Land)</option>
+                                    <option value="Recent Living Interior">Recent Living Interior (Interior Design)</option>
+                                    <option value="Recent Group Corporate">Recent Group Corporate</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Full Name *</label>
+                                <input type="text" name="ClientName" class="form-control rounded-3 py-2" placeholder="e.g. Engr. Rafiqul Islam" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Email Address *</label>
+                                <input type="email" name="EmailAddress" class="form-control rounded-3 py-2" placeholder="rafiqul@domain.com" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label small fw-semibold">Phone Number *</label>
+                                <input type="tel" name="PhoneNumber" class="form-control rounded-3 py-2" placeholder="+880 1711 000000" required />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Subject *</label>
+                                <input type="text" name="Subject" class="form-control rounded-3 py-2" placeholder="Joint Venture / Apartment Inquiry" required />
+                            </div>
+                            <div class="col-12">
+                                <label class="form-label small fw-semibold">Message / Land Details *</label>
+                                <textarea name="Message" class="form-control rounded-3" rows="4" placeholder="Specify land location, size in katha, road width, or apartment inquiry details..." required></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-success rounded-pill px-5 py-3 w-100 fw-bold">
+                                    <i class="bi bi-send-fill me-2"></i>Submit Inquiry to Recent Living Ltd.
+                                </button>
+                                <div class="inquiry-alert-box d-none"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

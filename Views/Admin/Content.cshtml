@@ -1,0 +1,179 @@
+﻿@model List<RealEstatePortfolio.Models.Entities.PageContent>
+
+@{
+    ViewData["Title"] = "Dynamic Content Engine (CMS)";
+    Layout = "_AdminLayout";
+    var selectedPage = ViewBag.SelectedPage as string ?? "Home";
+}
+
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+    <div>
+        <h4 class="fw-bold mb-1">Dynamic Content Management Engine</h4>
+        <p class="text-muted small mb-0">Modify landing page hero titles, marketing copy, and about us text dynamically without code changes.</p>
+    </div>
+    <button type="button" class="btn btn-primary rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#newContentModal">
+        <i class="bi bi-plus-lg me-1"></i> Add Custom Key
+    </button>
+</div>
+
+<!-- Page Tabs -->
+<ul class="nav nav-pills mb-4 gap-2">
+    <li class="nav-item">
+        <a class="nav-link rounded-pill px-4 @(selectedPage == "Home" ? "active" : "bg-body border")" asp-action="Content" asp-route-page="Home">
+            <i class="bi bi-house-door me-1"></i> Home Page Elements
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link rounded-pill px-4 @(selectedPage == "About" ? "active" : "bg-body border")" asp-action="Content" asp-route-page="About">
+            <i class="bi bi-info-circle me-1"></i> About Page Content
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link rounded-pill px-4 @(selectedPage == "Contact" ? "active" : "bg-body border")" asp-action="Content" asp-route-page="Contact">
+            <i class="bi bi-telephone me-1"></i> Contact Desk Information
+        </a>
+    </li>
+</ul>
+
+<!-- Content Table / Editors -->
+<div class="glass-card p-4">
+    <div class="table-responsive">
+        <table class="table align-middle table-hover mb-0">
+            <thead>
+                <tr class="text-muted small text-uppercase">
+                    <th style="width: 220px;">Section Key</th>
+                    <th>Current Value (Preview)</th>
+                    <th style="width: 140px;" class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model)
+                {
+                    <tr>
+                        <td>
+                            <span class="badge bg-secondary bg-opacity-25 text-body border font-monospace px-2 py-1">@c.SectionKey</span>
+                        </td>
+                        <td>
+                            <div class="text-muted small" style="max-height: 80px; overflow: hidden; text-overflow: ellipsis;">
+                                @if (c.ContentValue != null && c.ContentValue.Contains("<p>"))
+                                {
+                                    @Html.Raw(c.ContentValue)
+                                }
+                                else
+                                {
+                                    @c.ContentValue
+                                }
+                            </div>
+                        </td>
+                        <td class="text-end">
+                            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3 edit-content-btn" 
+                                    data-id="@c.Id" 
+                                    data-page="@c.PageName" 
+                                    data-key="@c.SectionKey" 
+                                    data-value="@c.ContentValue">
+                                <i class="bi bi-pencil-square me-1"></i> Edit
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Edit Content Modal with Rich Text Option -->
+<div class="modal fade" id="editContentModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content glass-card border">
+            <div class="modal-header border-bottom">
+                <h5 class="modal-title fw-bold" id="modalTitle">Edit CMS Section</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form asp-action="UpdateContent" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="id" id="editContentId" />
+                <input type="hidden" name="pageName" id="editPageName" />
+                <input type="hidden" name="sectionKey" id="editSectionKey" />
+
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Section Identifier</label>
+                        <input type="text" id="displaySectionKey" class="form-control rounded-3 font-monospace" disabled />
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Content Value</label>
+                        <textarea name="contentValue" id="editContentValue" class="form-control rounded-3" rows="6" required></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer border-top">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Save & Apply Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Add New Content Key Modal -->
+<div class="modal fade" id="newContentModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content glass-card border">
+            <div class="modal-header border-bottom">
+                <h5 class="modal-title fw-bold">Create Dynamic Content Key</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form asp-action="CreateContent" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-body p-4">
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Target Page</label>
+                        <select name="pageName" class="form-select rounded-3">
+                            <option value="Home" selected="@(selectedPage == "Home")">Home</option>
+                            <option value="About" selected="@(selectedPage == "About")">About</option>
+                            <option value="Contact" selected="@(selectedPage == "Contact")">Contact</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Section Key (e.g. Hero_Promo_Banner)</label>
+                        <input type="text" name="sectionKey" class="form-control rounded-3 font-monospace" placeholder="Banner_Announcement" required />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small fw-semibold">Initial Content Text / HTML</label>
+                        <textarea name="contentValue" class="form-control rounded-3" rows="4" placeholder="Enter content..." required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-top">
+                    <button type="button" class="btn btn-outline-secondary rounded-pill px-4" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4 fw-bold">Create Key</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const editModal = new bootstrap.Modal(document.getElementById('editContentModal'));
+
+            document.querySelectorAll('.edit-content-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const id = btn.getAttribute('data-id');
+                    const page = btn.getAttribute('data-page');
+                    const key = btn.getAttribute('data-key');
+                    const value = btn.getAttribute('data-value');
+
+                    document.getElementById('editContentId').value = id;
+                    document.getElementById('editPageName').value = page;
+                    document.getElementById('editSectionKey').value = key;
+                    document.getElementById('displaySectionKey').value = key;
+                    document.getElementById('editContentValue').value = value;
+
+                    editModal.show();
+                });
+            });
+        });
+    </script>
+}

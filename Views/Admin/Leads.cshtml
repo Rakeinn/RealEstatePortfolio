@@ -1,0 +1,227 @@
+@model List<RealEstatePortfolio.Models.Entities.ContactLead>
+
+@{
+    ViewData["Title"] = "Lead Inbox & VIP Inquiries";
+    Layout = "_AdminLayout";
+    var currentFilter = ViewBag.CurrentFilter as string ?? "all";
+    var totalUnread = ViewBag.TotalUnread as int? ?? 0;
+    var search = ViewBag.Search as string ?? "";
+}
+
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+    <div>
+        <h4 class="fw-bold mb-1">
+            VIP Lead & Inquiry Inbox
+            @if (totalUnread > 0)
+            {
+                <span class="badge bg-warning text-dark ms-2">@totalUnread Unread</span>
+            }
+        </h4>
+        <p class="text-muted small mb-0">Review inbound leads, private viewing requests, and inquiries.</p>
+    </div>
+</div>
+
+<!-- Filter and Search Bar -->
+<div class="glass-card p-3 mb-4">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+        <!-- Filter Tabs -->
+        <div class="btn-group rounded-pill p-1 bg-body border" role="group">
+            <a asp-action="Leads" asp-route-filter="all" asp-route-search="@search" class="btn btn-sm rounded-pill px-3 @(currentFilter == "all" ? "btn-primary" : "btn-link text-body text-decoration-none")">
+                All (@Model.Count)
+            </a>
+            <a asp-action="Leads" asp-route-filter="unread" asp-route-search="@search" class="btn btn-sm rounded-pill px-3 @(currentFilter == "unread" ? "btn-primary" : "btn-link text-body text-decoration-none")">
+                Unread Only
+            </a>
+            <a asp-action="Leads" asp-route-filter="read" asp-route-search="@search" class="btn btn-sm rounded-pill px-3 @(currentFilter == "read" ? "btn-primary" : "btn-link text-body text-decoration-none")">
+                Archived / Read
+            </a>
+        </div>
+
+        <!-- Search Box -->
+        <form method="get" asp-action="Leads" class="d-flex gap-2">
+            <input type="hidden" name="filter" value="@currentFilter" />
+            <div class="input-group">
+                <span class="input-group-text bg-body border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" name="search" value="@search" class="form-control border-start-0 ps-0 rounded-end-3" placeholder="Search client or email..." />
+            </div>
+            <button type="submit" class="btn btn-outline-primary rounded-pill px-3">Search</button>
+        </form>
+    </div>
+</div>
+
+<!-- Lead Data Grid -->
+<div class="glass-card p-4">
+    <div class="table-responsive">
+        <table class="table align-middle table-hover mb-0">
+            <thead>
+                <tr class="text-muted small text-uppercase">
+                    <th style="width: 40px;"></th>
+                    <th>Client Name</th>
+                    <th>Email & Contact</th>
+                    <th>Subject / Preferred Project</th>
+                    <th>Received At</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="6" class="text-center py-5 text-muted">
+                            <i class="bi bi-inbox fs-2 mb-2 d-block"></i>
+                            No lead submissions found for the selected filter.
+                        </td>
+                    </tr>
+                }
+                @foreach (var lead in Model)
+                {
+                    <tr class="@(!lead.IsRead ? "fw-bold bg-primary bg-opacity-10" : "")">
+                        <td>
+                            <i class="bi @(!lead.IsRead ? "bi-envelope-fill text-warning" : "bi-envelope-open text-muted")"></i>
+                        </td>
+                        <td>
+                            <div>@lead.ClientName</div>
+                        </td>
+                        <td>
+                            <div>@lead.EmailAddress</div>
+                            <small class="text-muted">@(lead.PhoneNumber ?? "No phone")</small>
+                        </td>
+                        <td>
+                            <div>@lead.Subject</div>
+                            <div class="d-flex align-items-center gap-1 mt-1">
+                                <span class="badge bg-primary bg-opacity-25 text-primary small" style="font-size: 10px;">@(lead.TargetedConcern ?? "Recent Group Corporate")</span>
+                                @if (!string.IsNullOrEmpty(lead.PreferredProjectSlug))
+                                {
+                                    <span class="badge bg-secondary bg-opacity-25 text-body small font-monospace" style="font-size: 10px;">@lead.PreferredProjectSlug</span>
+                                }
+                            </div>
+                        </td>
+                        <td class="small text-muted">
+                            @lead.SubmittedAt.ToString("MMM dd, yyyy HH:mm")
+                        </td>
+                        <td class="text-end">
+                            <div class="d-inline-flex gap-2">
+                                <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3 view-lead-btn"
+                                        data-id="@lead.Id"
+                                        data-name="@lead.ClientName"
+                                        data-email="@lead.EmailAddress"
+                                        data-phone="@(lead.PhoneNumber ?? "N/A")"
+                                        data-subject="@lead.Subject"
+                                        data-project="@(lead.PreferredProjectSlug ?? "None")"
+                                        data-message="@lead.Message"
+                                        data-date="@lead.SubmittedAt.ToString("f")"
+                                        data-read="@lead.IsRead">
+                                    <i class="bi bi-eye-fill me-1"></i> Read
+                                </button>
+                                
+                                <form asp-action="DeleteLead" asp-route-id="@lead.Id" method="post" class="d-inline" onsubmit="return confirm('Delete this inquiry permanently?');">
+                                    @Html.AntiForgeryToken()
+                                    <button type="submit" class="btn btn-outline-danger btn-sm rounded-circle p-2" title="Delete">
+                                        <i class="bi bi-trash-fill"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Lead Detail Modal -->
+<div class="modal fade" id="leadModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content glass-card border">
+            <div class="modal-header border-bottom">
+                <h5 class="modal-title fw-bold" id="modalClientName">Inquiry Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <div class="row g-3 mb-4">
+                    <div class="col-sm-6">
+                        <small class="text-muted d-block">Client Email:</small>
+                        <strong id="modalEmail"></strong>
+                    </div>
+                    <div class="col-sm-6">
+                        <small class="text-muted d-block">Phone Number:</small>
+                        <strong id="modalPhone"></strong>
+                    </div>
+                    <div class="col-sm-6">
+                        <small class="text-muted d-block">Subject:</small>
+                        <span id="modalSubject" class="fw-semibold"></span>
+                    </div>
+                    <div class="col-sm-6">
+                        <small class="text-muted d-block">Preferred Project:</small>
+                        <span id="modalProject" class="badge bg-primary"></span>
+                    </div>
+                    <div class="col-12">
+                        <small class="text-muted d-block">Date Received:</small>
+                        <span id="modalDate" class="small"></span>
+                    </div>
+                </div>
+
+                <div class="p-4 rounded-3 bg-body border mb-3">
+                    <h6 class="fw-bold mb-2">Message Content:</h6>
+                    <p id="modalMessage" class="mb-0 text-muted" style="white-space: pre-wrap;"></p>
+                </div>
+            </div>
+            <div class="modal-footer border-top d-flex justify-content-between">
+                <button type="button" id="toggleReadBtn" class="btn btn-outline-secondary rounded-pill px-3">
+                    <i class="bi bi-check2-circle me-1"></i> Toggle Read Status
+                </button>
+                <div class="d-flex gap-2">
+                    <a id="modalReplyBtn" href="#" class="btn btn-primary rounded-pill px-4">
+                        <i class="bi bi-reply-fill me-1"></i> Direct Email Reply
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const leadModal = new bootstrap.Modal(document.getElementById('leadModal'));
+            let activeLeadId = null;
+
+            document.querySelectorAll('.view-lead-btn').forEach(btn => {
+                btn.addEventListener('click', async () => {
+                    activeLeadId = btn.getAttribute('data-id');
+                    const name = btn.getAttribute('data-name');
+                    const email = btn.getAttribute('data-email');
+                    const phone = btn.getAttribute('data-phone');
+                    const subject = btn.getAttribute('data-subject');
+                    const project = btn.getAttribute('data-project');
+                    const message = btn.getAttribute('data-message');
+                    const date = btn.getAttribute('data-date');
+                    const isRead = btn.getAttribute('data-read') === 'True';
+
+                    document.getElementById('modalClientName').textContent = `Inquiry from ${name}`;
+                    document.getElementById('modalEmail').textContent = email;
+                    document.getElementById('modalPhone').textContent = phone;
+                    document.getElementById('modalSubject').textContent = subject;
+                    document.getElementById('modalProject').textContent = project;
+                    document.getElementById('modalDate').textContent = date;
+                    document.getElementById('modalMessage').textContent = message;
+                    document.getElementById('modalReplyBtn').href = `mailto:${email}?subject=Re: ${encodeURIComponent(subject)}`;
+
+                    leadModal.show();
+
+                    // If unread, mark as read automatically
+                    if (!isRead) {
+                        await fetch(`/Admin/ToggleLeadReadStatus?id=${activeLeadId}`, { method: 'POST' });
+                    }
+                });
+            });
+
+            document.getElementById('toggleReadBtn').addEventListener('click', async () => {
+                if (activeLeadId) {
+                    await fetch(`/Admin/ToggleLeadReadStatus?id=${activeLeadId}`, { method: 'POST' });
+                    location.reload();
+                }
+            });
+        });
+    </script>
+}
