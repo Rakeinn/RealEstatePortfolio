@@ -101,5 +101,154 @@
         }
       });
     });
+    // Setup Hero Media Banner: Video with Seamless Transition to Image Carousel
+    const heroMediaBanner = document.getElementById("heroMediaBanner");
+    if (heroMediaBanner) {
+      const heroVideo = document.getElementById("heroVideo");
+      const heroVideoWrapper = document.getElementById("heroVideoWrapper");
+      const heroSwiperEl = document.getElementById("heroSwiper");
+      const heroPrevBtn = document.getElementById("heroPrevBtn");
+      const heroNextBtn = document.getElementById("heroNextBtn");
+      const heroMediaToggleBtn = document.getElementById("heroMediaToggleBtn");
+      const heroMediaToggleIcon = document.getElementById("heroMediaToggleIcon");
+      const heroMediaToggleText = document.getElementById("heroMediaToggleText");
+      const heroAudioToggleBtn = document.getElementById("heroAudioToggleBtn");
+      const heroAudioIcon = document.getElementById("heroAudioIcon");
+
+      let isShowingVideo = true;
+      let heroSwiper = null;
+
+      // Initialize Swiper Carousel for the 3 uploaded images
+      if (typeof Swiper !== "undefined" && heroSwiperEl) {
+        heroSwiper = new Swiper(heroSwiperEl, {
+          loop: true,
+          speed: 800,
+          effect: "fade",
+          fadeEffect: { crossFade: true },
+          autoplay: {
+            delay: 4500,
+            disableOnInteraction: false
+          },
+          pagination: {
+            el: "#heroPagination",
+            clickable: true
+          },
+          touchEventsTarget: "container",
+          simulateTouch: true,
+          grabCursor: true
+        });
+
+        // Don't autoplay carousel while video is playing initially
+        heroSwiper.autoplay.stop();
+      }
+
+      const showCarousel = (slideDirection) => {
+        if (heroVideo && !heroVideo.paused) {
+          heroVideo.pause();
+        }
+        if (heroVideoWrapper) {
+          heroVideoWrapper.classList.add("hidden");
+        }
+        isShowingVideo = false;
+
+        if (heroMediaToggleText) heroMediaToggleText.textContent = "Watch Video";
+        if (heroMediaToggleIcon) heroMediaToggleIcon.className = "bi bi-play-circle-fill";
+
+        if (heroSwiper) {
+          heroSwiper.autoplay.start();
+          if (slideDirection === "next") {
+            heroSwiper.slideNext();
+          } else if (slideDirection === "prev") {
+            heroSwiper.slidePrev();
+          }
+        }
+      };
+
+      const showVideo = () => {
+        if (heroVideoWrapper) {
+          heroVideoWrapper.classList.remove("hidden");
+        }
+        if (heroVideo) {
+          heroVideo.currentTime = 0;
+          const playPromise = heroVideo.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {
+              heroVideo.muted = true;
+              heroVideo.play();
+            });
+          }
+        }
+        isShowingVideo = true;
+
+        if (heroMediaToggleText) heroMediaToggleText.textContent = "View Photos";
+        if (heroMediaToggleIcon) heroMediaToggleIcon.className = "bi bi-images";
+
+        if (heroSwiper) {
+          heroSwiper.autoplay.stop();
+        }
+      };
+
+      // 1. When video naturally ends -> seamlessly switch to photo carousel
+      if (heroVideo) {
+        heroVideo.addEventListener("ended", () => {
+          showCarousel();
+        });
+      }
+
+      // 2. When user clicks anywhere on the video wrapper -> stop video and reveal carousel
+      if (heroVideoWrapper) {
+        heroVideoWrapper.addEventListener("click", () => {
+          showCarousel();
+        });
+      }
+
+      // 3. Previous / Next Navigation Buttons
+      // If clicked while video is playing -> stops video and switches to carousel image
+      // If clicked during carousel -> changes the carousel image
+      if (heroPrevBtn) {
+        heroPrevBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (isShowingVideo) {
+            showCarousel("prev");
+          } else if (heroSwiper) {
+            heroSwiper.slidePrev();
+          }
+        });
+      }
+
+      if (heroNextBtn) {
+        heroNextBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (isShowingVideo) {
+            showCarousel("next");
+          } else if (heroSwiper) {
+            heroSwiper.slideNext();
+          }
+        });
+      }
+
+      // 4. Mode Switch Button (Watch Video <-> View Photos)
+      if (heroMediaToggleBtn) {
+        heroMediaToggleBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          if (isShowingVideo) {
+            showCarousel();
+          } else {
+            showVideo();
+          }
+        });
+      }
+
+      // 5. Audio Mute / Unmute Button
+      if (heroAudioToggleBtn && heroVideo) {
+        heroAudioToggleBtn.addEventListener("click", (e) => {
+          e.stopPropagation();
+          heroVideo.muted = !heroVideo.muted;
+          if (heroAudioIcon) {
+            heroAudioIcon.className = heroVideo.muted ? "bi bi-volume-mute-fill" : "bi bi-volume-up-fill";
+          }
+        });
+      }
+    }
   });
 })();

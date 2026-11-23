@@ -151,6 +151,261 @@ h1, h2, h3, .font-serif, .editorial-heading {
               radial-gradient(circle at 15% 75%, rgba(197, 168, 128, 0.08), transparent 45%);
 }
 
+/* ==========================================================================
+   Hero Media Banner (Video + Carousel with Seamless Transition)
+   ========================================================================== */
+.hero-media-banner {
+  position: relative;
+  min-height: 85vh;
+  height: 90vh;
+  max-height: 900px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  background-color: #090d16;
+}
+
+@media (max-width: 991.98px) {
+  .hero-media-banner {
+    min-height: 640px;
+    height: auto;
+    padding: 100px 0 80px;
+  }
+}
+
+.hero-video-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.8s ease;
+  cursor: pointer;
+}
+
+.hero-video-wrapper.hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.hero-video-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-carousel-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-media-swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.hero-media-swiper .swiper-slide {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-media-swiper .swiper-slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 6s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+.hero-media-swiper .swiper-slide-active img {
+  transform: scale(1.08);
+}
+
+.hero-slide-caption {
+  position: absolute;
+  bottom: 24px;
+  left: 32px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  background: linear-gradient(180deg, rgba(9, 13, 22, 0.65) 0%, rgba(9, 13, 22, 0.4) 45%, rgba(9, 13, 22, 0.85) 100%);
+  pointer-events: none;
+}
+
+.hero-content-container {
+  position: relative;
+  z-index: 3;
+}
+
+.text-shadow-lg {
+  text-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.text-shadow-sm {
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.backdrop-blur {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Left & Right Swipe / Change Buttons */
+.hero-carousel-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  cursor: pointer;
+  z-index: 5;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}
+
+.hero-carousel-nav:hover {
+  background: rgba(2, 132, 199, 0.85);
+  border-color: rgba(255, 255, 255, 0.6);
+  transform: translateY(-50%) scale(1.1);
+  color: #ffffff;
+}
+
+.hero-carousel-prev {
+  left: 24px;
+}
+
+.hero-carousel-next {
+  right: 24px;
+}
+
+@media (max-width: 767.98px) {
+  .hero-carousel-nav {
+    width: 42px;
+    height: 42px;
+    font-size: 1rem;
+  }
+  .hero-carousel-prev {
+    left: 12px;
+  }
+  .hero-carousel-next {
+    right: 12px;
+  }
+}
+
+/* Media Status & Control Toolbar */
+.hero-media-toolbar {
+  position: absolute;
+  bottom: 24px;
+  right: 28px;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@media (max-width: 767.98px) {
+  .hero-media-toolbar {
+    bottom: 14px;
+    right: 14px;
+  }
+}
+
+.hero-toolbar-pill {
+  padding: 0.45rem 1rem;
+  border-radius: 50rem;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  font-size: 0.825rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.hero-toolbar-pill:hover {
+  background: rgba(2, 132, 199, 0.8);
+  border-color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
+}
+
+.hero-toolbar-icon-btn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.hero-toolbar-icon-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+/* Hero Carousel Pagination Dots */
+.hero-swiper-pagination {
+  position: absolute;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  width: auto !important;
+}
+
+.hero-swiper-pagination .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.4);
+  opacity: 1;
+  transition: all 0.3s ease;
+  margin: 0 !important;
+  cursor: pointer;
+}
+
+.hero-swiper-pagination .swiper-pagination-bullet-active {
+  width: 28px;
+  border-radius: 50rem;
+  background: var(--primary-accent) !important;
+  box-shadow: 0 0 10px var(--primary-accent);
+}
+
 /* Skeleton Loading Shimmer */
 .skeleton-loader {
   background: linear-gradient(

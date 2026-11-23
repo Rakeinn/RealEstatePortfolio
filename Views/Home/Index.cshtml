@@ -1,4 +1,4 @@
-@model RealEstatePortfolio.Models.ViewModels.HomeViewModel
+﻿@model RealEstatePortfolio.Models.ViewModels.HomeViewModel
 
 @{
     ViewData["Title"] = "Recent Group | Premier Real Estate & Infrastructure in Bangladesh";
@@ -11,48 +11,114 @@
     var aboutStory = Model.Content.GetValueOrDefault("About_Story", "<p><strong>Recent Living Ltd.</strong> (Tagline: <em>Better Lifestyle…</em>) is committed to becoming a trusted and respected real estate company in Bangladesh, creating thoughtfully designed homes and commercial spaces that enrich people\'s lives and contribute to better communities.</p><p>We envision a future where every project we develop reflects quality, trust, thoughtful design, and lasting value—creating places where people can truly enjoy a better lifestyle.</p>");
 }
 
-<!-- Editorial Hero Section -->
-<section class="hero-editorial py-5">
-    <div class="container py-lg-5">
-        <div class="row align-items-center g-5">
-            <div class="col-lg-7" data-aos="fade-up" data-aos-duration="900">
-                <div class="d-inline-flex align-items-center gap-2 mb-3 px-3 py-1 rounded-pill bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 small fw-bold">
-                    <i class="bi bi-buildings"></i> Recent Group • Building Excellence in Bangladesh
-                </div>
-                <h1 class="display-3 fw-bold lh-sm mb-4 font-serif">
-                    @heroTitle
-                </h1>
-                <p class="lead text-muted mb-5 pe-lg-5" style="font-weight: 400; line-height: 1.7;">
-                    @heroSubtitle
-                </p>
-                <div class="d-flex flex-wrap gap-3">
-                    <a asp-controller="Projects" asp-action="Index" class="btn btn-primary btn-lg rounded-pill px-4 py-3 shadow-sm d-flex align-items-center gap-2">
-                        <span>Explore Projects</span>
-                        <i class="bi bi-arrow-right"></i>
-                    </a>
-                    <a asp-controller="Home" asp-action="About" class="btn btn-outline-secondary btn-lg rounded-pill px-4 py-3">
-                        <span>About Recent Group</span>
-                    </a>
-                    <a href="#joint-venture" class="btn btn-outline-primary btn-lg rounded-pill px-4 py-3">
-                        <i class="bi bi-handshake me-1"></i>Joint Venture
-                    </a>
-                </div>
-            </div>
+<!-- Hero Media Banner: Video with Seamless Transition to Image Carousel -->
+<section class="hero-media-banner position-relative overflow-hidden" id="heroMediaBanner">
+    <!-- 1. Background Video Layer -->
+    <div class="hero-video-wrapper" id="heroVideoWrapper" title="Click anywhere to pause video and view photo carousel">
+        <video id="heroVideo" autoplay muted playsinline poster="/images/hero/slide-1.jpg" preload="auto">
+            <source src="/videos/hero-banner.mp4" type="video/mp4" />
+            Your browser does not support HTML5 video.
+        </video>
+    </div>
 
-            <div class="col-lg-5" data-aos="zoom-in" data-aos-delay="200" data-aos-duration="1000">
-                <div class="glass-card p-4 shadow-lg overflow-hidden position-relative text-center">
-                    <img src="/images/logo.png" alt="Recent Group Logo" class="img-fluid mb-4" style="max-height: 200px; object-fit: contain;" />
-                    <div class="border-top pt-3">
-                        <h4 class="fw-bold font-serif mb-1"><span class="text-primary">RECENT</span> <span class="text-success">GROUP</span></h4>
-                        <p class="text-muted small mb-3">Recent Properties Ltd &bull; Recent Living Ltd &bull; Recent Living Interior</p>
-                        <div class="d-flex justify-content-center gap-2">
-                            <span class="badge bg-body border text-muted small px-3 py-2">Dhaka, Bangladesh</span>
-                            <span class="badge bg-body border text-muted small px-3 py-2">Joint Ventures</span>
-                        </div>
+    <!-- 2. Background Image Carousel Layer (Swiper) -->
+    <div class="hero-carousel-wrapper" id="heroCarouselWrapper">
+        <div class="swiper hero-media-swiper" id="heroSwiper">
+            <div class="swiper-wrapper">
+                <!-- Slide 1: Grand Evening Arrival & Architecture -->
+                <div class="swiper-slide">
+                    <img src="/images/hero/slide-1.jpg" alt="Recent Living Luxury Residential Entrance & Lobby" loading="eager" />
+                    <div class="hero-slide-caption d-none d-md-block">
+                        <span class="badge bg-black bg-opacity-60 text-white border border-white border-opacity-20 px-3 py-2 rounded-pill small backdrop-blur">
+                            <i class="bi bi-geo-alt-fill text-warning me-1"></i> Signature Entrance &bull; Landscaped Arrival Court
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Slide 2: Modern Condominium Architecture -->
+                <div class="swiper-slide">
+                    <img src="/images/hero/slide-2.jpg" alt="Recent Living Eco-Condominium Architecture" loading="lazy" />
+                    <div class="hero-slide-caption d-none d-md-block">
+                        <span class="badge bg-black bg-opacity-60 text-white border border-white border-opacity-20 px-3 py-2 rounded-pill small backdrop-blur">
+                            <i class="bi bi-building-check text-primary me-1"></i> Eco-Architecture &bull; Cascading Balconies &amp; Sky Gardens
+                        </span>
+                    </div>
+                </div>
+
+                <!-- Slide 3: Luxury Penthouse Interior Living -->
+                <div class="swiper-slide">
+                    <img src="/images/hero/slide-3.jpg" alt="Recent Living Penthouse Interior & Better Lifestyle" loading="lazy" />
+                    <div class="hero-slide-caption d-none d-md-block">
+                        <span class="badge bg-black bg-opacity-60 text-white border border-white border-opacity-20 px-3 py-2 rounded-pill small backdrop-blur">
+                            <i class="bi bi-heart-pulse-fill text-danger me-1"></i> Better Lifestyle &bull; Sunlit Panoramic Duplex Living
+                        </span>
                     </div>
                 </div>
             </div>
+
+            <!-- Pagination Bullets for Carousel -->
+            <div class="hero-swiper-pagination" id="heroPagination"></div>
         </div>
+    </div>
+
+    <!-- 3. Cinematic Luxury Dark Gradient Overlay -->
+    <div class="hero-overlay"></div>
+
+    <!-- 4. Left & Right Swipe / Change Navigation Buttons -->
+    <button type="button" class="hero-carousel-nav hero-carousel-prev" id="heroPrevBtn" aria-label="Previous Image" title="Previous Image / Switch to Carousel">
+        <i class="bi bi-chevron-left"></i>
+    </button>
+    <button type="button" class="hero-carousel-nav hero-carousel-next" id="heroNextBtn" aria-label="Next Image" title="Next Image / Switch to Carousel">
+        <i class="bi bi-chevron-right"></i>
+    </button>
+
+    <!-- 5. Hero Content: Headline, Text & Two Designer Buttons -->
+    <div class="container hero-content-container py-5">
+        <div class="row">
+            <div class="col-lg-9 col-xl-8" data-aos="fade-up" data-aos-duration="900">
+                <!-- Branding Badge -->
+                <div class="d-inline-flex align-items-center gap-2 mb-3 px-3 py-2 rounded-pill bg-white bg-opacity-15 text-white border border-white border-opacity-25 small fw-semibold shadow-sm backdrop-blur">
+                    <i class="bi bi-patch-check-fill text-success fs-6"></i>
+                    <span>Recent Living Ltd. &bull; <em>Better Lifestyle…</em></span>
+                </div>
+
+                <!-- Headline -->
+                <h1 class="display-3 fw-bold text-white lh-sm mb-3 font-serif text-shadow-lg">
+                    @heroTitle
+                </h1>
+
+                <!-- Subtitle / Description -->
+                <p class="lead text-white text-opacity-90 mb-4 pe-lg-5 fs-5 text-shadow-sm" style="font-weight: 400; line-height: 1.7;">
+                    @heroSubtitle
+                </p>
+
+                <!-- Two Designer Action Buttons -->
+                <div class="d-flex flex-wrap gap-3 align-items-center pt-2">
+                    <!-- Button 1: Primary Action -->
+                    <a asp-controller="Projects" asp-action="Index" class="btn btn-primary btn-lg rounded-pill px-4 py-3 shadow-lg d-inline-flex align-items-center gap-2 fw-semibold">
+                        <span>Explore Projects</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+
+                    <!-- Button 2: Secondary Action -->
+                    <a href="#joint-venture" class="btn btn-outline-light btn-lg rounded-pill px-4 py-3 backdrop-blur shadow-sm d-inline-flex align-items-center gap-2 fw-semibold">
+                        <i class="bi bi-handshake"></i>
+                        <span>Joint Venture</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. Bottom Media Status Toolbar (Switch between Video & Photos, Sound Toggle) -->
+    <div class="hero-media-toolbar">
+        <button type="button" class="hero-toolbar-pill" id="heroMediaToggleBtn" title="Switch between Video and Photo Carousel">
+            <i class="bi bi-images" id="heroMediaToggleIcon"></i>
+            <span id="heroMediaToggleText">View Photos</span>
+        </button>
+        <button type="button" class="hero-toolbar-icon-btn" id="heroAudioToggleBtn" title="Mute / Unmute Video">
+            <i class="bi bi-volume-mute-fill" id="heroAudioIcon"></i>
+        </button>
     </div>
 </section>
 

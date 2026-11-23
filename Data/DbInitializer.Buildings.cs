@@ -1,4 +1,4 @@
-using RealEstatePortfolio.Models.Entities;
+﻿using RealEstatePortfolio.Models.Entities;
 
 namespace RealEstatePortfolio.Data
 {
