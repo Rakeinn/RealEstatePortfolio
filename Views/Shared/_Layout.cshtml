@@ -72,6 +72,11 @@
                 </ul>
 
                 <div class="d-flex align-items-center gap-2">
+                    <!-- Theme Toggle Switch for Dark/Light Mode -->
+                    <button id="themeToggleBtn" class="btn btn-outline-secondary rounded-circle d-flex align-items-center justify-content-center" type="button" title="Toggle Theme" style="width: 40px; height: 40px; padding: 0;">
+                        <i id="themeIcon" class="bi bi-moon-stars-fill"></i>
+                    </button>
+
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <div class="dropdown">
@@ -95,9 +100,9 @@
                     }
                     else
                     {
-                        <a class="btn btn-primary rounded-pill px-4 py-2 small fw-semibold shadow-sm d-inline-flex align-items-center gap-2" asp-controller="Home" asp-action="Contact">
-                            <i class="bi bi-chat-dots-fill"></i>
-                            <span>Get in Touch</span>
+                        <a class="btn btn-primary rounded-pill px-4 py-2 small fw-semibold shadow-sm d-inline-flex align-items-center gap-2" asp-controller="Account" asp-action="Login">
+                            <i class="bi bi-box-arrow-in-right"></i>
+                            <span>Log in</span>
                         </a>
                     }
                 </div>

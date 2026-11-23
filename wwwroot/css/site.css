@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    ESTATE LUXE - Architectural Studio Theme & Bespoke Styling
    ========================================================================== */
 
@@ -331,6 +331,38 @@ h1, h2, h3, .font-serif, .editorial-heading {
   }
 }
 
+
+.hero-sound-btn {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-size: 1.25rem;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  user-select: none;
+}
+
+.hero-sound-btn:hover {
+  background: rgba(2, 132, 199, 0.85);
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #ffffff;
+  transform: scale(1.08);
+  box-shadow: 0 6px 24px rgba(2, 132, 199, 0.45);
+}
+
+.hero-sound-btn:active {
+  transform: scale(0.96);
+}
+
 .hero-audio-pill {
   padding: 0.5rem 1.15rem;
   border-radius: 50rem;
@@ -656,4 +688,99 @@ h1, h2, h3, .font-serif, .editorial-heading {
 .footer-link:hover {
   color: var(--primary-accent) !important;
   transform: translateX(4px);
+}
+
+
+/* ==========================================================================
+   Home Page Animated Image Grid / Gallery
+   ========================================================================== */
+.gallery-tile {
+  background-color: #0a0f1d;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.gallery-tile-lg {
+  height: 480px;
+}
+
+.gallery-tile-sm {
+  height: 228px;
+}
+
+@media (max-width: 991.98px) {
+  .gallery-tile-lg {
+    height: 340px;
+  }
+  .gallery-tile-sm {
+    height: 260px;
+  }
+}
+
+.gallery-tile-img {
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-tile-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 15, 29, 0) 30%, rgba(10, 15, 29, 0.88) 100%);
+  transition: background 0.4s ease, opacity 0.4s ease;
+  z-index: 1;
+}
+
+.gallery-tile-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.5rem;
+  z-index: 2;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.gallery-tile-zoom-icon {
+  position: absolute;
+  top: 1.25rem;
+  right: 1.25rem;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(15, 23, 42, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  opacity: 0;
+  transform: scale(0.85);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 2;
+}
+
+.gallery-tile:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.35);
+}
+
+.gallery-tile:hover .gallery-tile-img {
+  transform: scale(1.06);
+}
+
+.gallery-tile:hover .gallery-tile-overlay {
+  background: linear-gradient(180deg, rgba(2, 132, 199, 0.08) 20%, rgba(10, 15, 29, 0.92) 100%);
+}
+
+.gallery-tile:hover .gallery-tile-content {
+  transform: translateY(-4px);
+}
+
+.gallery-tile:hover .gallery-tile-zoom-icon {
+  opacity: 1;
+  transform: scale(1);
 }

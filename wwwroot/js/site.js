@@ -136,9 +136,11 @@
         if (heroVideo && heroVideo.muted) {
           heroAudioIcon.className = "bi bi-volume-mute-fill";
           if (heroAudioText) heroAudioText.textContent = "Sound Off";
+          if (heroAudioToggleBtn) heroAudioToggleBtn.setAttribute("title", "Turn Sound On");
         } else {
           heroAudioIcon.className = "bi bi-volume-up-fill";
           if (heroAudioText) heroAudioText.textContent = "Sound On";
+          if (heroAudioToggleBtn) heroAudioToggleBtn.setAttribute("title", "Turn Sound Off");
         }
       };
 
@@ -290,5 +292,30 @@
         });
       }
     }
+
+    // 5. Setup Gallery Grid Lightbox Modal
+    const galleryTiles = document.querySelectorAll(".gallery-tile");
+    const lightboxModalEl = document.getElementById("galleryLightboxModal");
+    if (galleryTiles.length > 0 && lightboxModalEl && typeof bootstrap !== "undefined") {
+      const lightboxModal = new bootstrap.Modal(lightboxModalEl);
+      const modalImg = document.getElementById("lightboxModalImg");
+      const modalTitle = document.getElementById("lightboxModalTitle");
+      const modalCategory = document.getElementById("lightboxModalCategory");
+
+      galleryTiles.forEach((tile) => {
+        tile.addEventListener("click", () => {
+          const imgSrc = tile.getAttribute("data-img");
+          const title = tile.getAttribute("data-title");
+          const category = tile.getAttribute("data-category");
+
+          if (modalImg) modalImg.src = imgSrc;
+          if (modalTitle) modalTitle.textContent = title || "";
+          if (modalCategory) modalCategory.textContent = category || "Recent Group";
+
+          lightboxModal.show();
+        });
+      });
+    }
+
   });
 })();
