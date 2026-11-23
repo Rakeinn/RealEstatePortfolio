@@ -13,15 +13,7 @@
                 <p class="text-muted mb-0">Explore master projects by Recent Properties Ltd, Recent Living Ltd, and Recent Living Interior.</p>
             </div>
             
-            <!-- View Mode Switcher -->
-            <div class="btn-group rounded-pill p-1 glass-card shadow-sm" role="group">
-                <button type="button" class="btn btn-sm btn-primary rounded-pill px-3 active" id="viewGridBtn">
-                    <i class="bi bi-grid-fill me-1"></i> Grid Catalog
-                </button>
-                <button type="button" class="btn btn-sm btn-outline-secondary rounded-pill px-3" id="viewMapBtn">
-                    <i class="bi bi-map-fill me-1"></i> Global Map View
-                </button>
-            </div>
+
         </div>
     </div>
 </section>
@@ -72,8 +64,6 @@
                         <select id="filterSort" name="SortBy" class="form-select">
                             <option value="newest" selected="@(Model.SortBy == "newest")">Newest First</option>
                             <option value="name_asc" selected="@(Model.SortBy == "name_asc")">Name (A-Z)</option>
-                            <option value="price_asc" selected="@(Model.SortBy == "price_asc")">Price (Low to High)</option>
-                            <option value="price_desc" selected="@(Model.SortBy == "price_desc")">Price (High to Low)</option>
                             <option value="year_desc" selected="@(Model.SortBy == "year_desc")">Completion Year</option>
                         </select>
                     </div>
@@ -109,14 +99,7 @@
             }
         </div>
 
-        <!-- Master Map View -->
-        <div id="mapViewContainer" class="glass-card p-3 mb-5 d-none">
-            <div class="d-flex justify-content-between align-items-center mb-3 px-2">
-                <h5 class="fw-bold mb-0 font-serif"><i class="bi bi-geo-alt-fill text-primary me-2"></i>Global Project Locations</h5>
-                <span class="badge bg-primary rounded-pill px-3 py-2" id="mapProjectCount">@Model.Projects.Count Landmarks Pinned</span>
-            </div>
-            <div id="masterLeafletMap" style="height: 550px; width: 100%; border-radius: 0.75rem;"></div>
-        </div>
+
 
         <!-- Grid View Results -->
         <div id="projectsGrid" class="row g-4">
@@ -136,24 +119,24 @@
                 @foreach (var p in Model.Projects)
                 {
                     <div class="col-md-6 col-lg-4 project-item" data-aos="fade-up">
-                        <div class="card h-100 glass-card glass-card-hover border-0 overflow-hidden d-flex flex-column">
-                            <div class="position-relative overflow-hidden" style="height: 240px;">
-                                <img src="@(p.PrimaryImage?.ImagePath ?? "/images/properties/lumina-1.svg")" alt="@p.Name" class="w-100 h-100 object-fit-cover" loading="lazy" />
+                        <div class="card h-100 glass-card glass-card-hover border-0 overflow-hidden d-flex flex-column project-card-modern">
+                            <div class="project-card-image-wrap position-relative overflow-hidden">
+                                <img src="@(p.PrimaryImage?.ImagePath ?? "/images/properties/lumina-1.svg")" alt="@p.Name" class="w-100 h-100 project-card-img" loading="lazy" />
                                 <div class="position-absolute top-0 start-0 m-3">
                                     <span class="badge badge-status-@(p.Status.ToString().ToLower()) shadow-sm">@p.Status</span>
                                 </div>
-                                @if (p.CompletionYear.HasValue)
-                                {
-                                    <div class="position-absolute top-0 end-0 m-3">
-                                        <span class="badge bg-dark bg-opacity-75 text-white shadow-sm">Est. @p.CompletionYear</span>
-                                    </div>
-                                }
+                                <div class="position-absolute top-0 end-0 m-3 d-flex gap-1">
+                                    <span class="badge bg-primary bg-opacity-90 text-white shadow-sm fw-semibold">@(p.PropertyType ?? "Residential")</span>
+                                </div>
                             </div>
 
                             <div class="card-body p-4 d-flex flex-column">
                                 <div class="d-flex justify-content-between align-items-center mb-2">
                                     <span class="badge bg-secondary bg-opacity-10 text-body border small">@(p.SisterConcern ?? "Recent Properties Ltd")</span>
-                                    <span class="text-muted small">@(p.PropertyType ?? "Residential")</span>
+                                    @if (p.CompletionYear.HasValue)
+                                    {
+                                        <span class="text-muted small"><i class="bi bi-calendar3 me-1"></i>Est. @p.CompletionYear</span>
+                                    }
                                 </div>
 
                                 <h5 class="card-title fw-bold font-serif mb-2 fs-5">
@@ -174,12 +157,11 @@
                                 }
 
                                 <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <span class="text-muted small d-block" style="font-size: 11px; text-transform: uppercase;">From</span>
-                                        <span class="fw-bold text-primary fs-5 font-serif">@(p.PriceStartingFrom.HasValue ? $"${p.PriceStartingFrom:N0}" : "Price on Request")</span>
-                                    </div>
+                                    <span class="text-primary fw-semibold small d-inline-flex align-items-center gap-1">
+                                        View Project Details
+                                    </span>
                                     <span class="btn btn-outline-primary btn-sm rounded-circle p-2">
-                                        <i class="bi bi-chevron-right"></i>
+                                        <i class="bi bi-arrow-right"></i>
                                     </span>
                                 </div>
                             </div>
@@ -194,85 +176,7 @@
 @section Scripts {
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            let masterMap = null;
-            let mapMarkers = [];
-
-            function initMasterMap(projects) {
-                if (!masterMap) {
-                    masterMap = L.map('masterLeafletMap').setView([25.0, 10.0], 2);
-                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                        attribution: '&copy; OpenStreetMap contributors'
-                    }).addTo(masterMap);
-                }
-
-                mapMarkers.forEach(m => masterMap.removeLayer(m));
-                mapMarkers = [];
-
-                const bounds = [];
-                projects.forEach(p => {
-                    if (p.latitude && p.longitude) {
-                        const marker = L.marker([p.latitude, p.longitude]).addTo(masterMap);
-                        marker.bindPopup(`
-                            <div style="min-width: 190px;">
-                                <img src="${p.primaryImage}" style="width: 100%; height: 90px; object-fit: cover; border-radius: 6px; margin-bottom: 6px;" />
-                                <strong style="font-size: 14px;">${p.name}</strong><br>
-                                <span class="badge bg-secondary mb-1" style="font-size: 10px;">${p.sisterConcern || 'Recent Group'}</span>
-                                <span class="badge bg-primary mb-1" style="font-size: 10px;">${p.statusText}</span><br>
-                                <small class="text-muted">${p.address || ''}</small><br>
-                                <a href="/projects/${p.slug}" class="btn btn-sm btn-primary w-100 mt-2 text-white" style="font-size: 11px;">View Project</a>
-                            </div>
-                        `);
-                        mapMarkers.push(marker);
-                        bounds.push([p.latitude, p.longitude]);
-                    }
-                });
-
-                if (bounds.length > 0) {
-                    masterMap.fitBounds(bounds, { padding: [40, 40] });
-                }
-            }
-
-            const viewGridBtn = document.getElementById('viewGridBtn');
-            const viewMapBtn = document.getElementById('viewMapBtn');
             const projectsGrid = document.getElementById('projectsGrid');
-            const mapViewContainer = document.getElementById('mapViewContainer');
-
-            viewGridBtn.addEventListener('click', () => {
-                viewGridBtn.classList.add('btn-primary', 'active');
-                viewGridBtn.classList.remove('btn-outline-secondary');
-                viewMapBtn.classList.remove('btn-primary', 'active');
-                viewMapBtn.classList.add('btn-outline-secondary');
-
-                projectsGrid.classList.remove('d-none');
-                mapViewContainer.classList.add('d-none');
-            });
-
-            viewMapBtn.addEventListener('click', () => {
-                viewMapBtn.classList.add('btn-primary', 'active');
-                viewMapBtn.classList.remove('btn-outline-secondary');
-                viewGridBtn.classList.remove('btn-primary', 'active');
-                viewGridBtn.classList.add('btn-outline-secondary');
-
-                mapViewContainer.classList.remove('d-none');
-                projectsGrid.classList.add('d-none');
-
-                setTimeout(() => {
-                    masterMap.invalidateSize();
-                }, 200);
-            });
-
-            const initialProjects = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(Model.Projects.Select(b => new {
-                id = b.Id,
-                name = b.Name,
-                slug = b.Slug,
-                address = b.Address,
-                statusText = b.Status.ToString(),
-                sisterConcern = b.SisterConcern ?? "Recent Properties Ltd",
-                latitude = b.Latitude,
-                longitude = b.Longitude,
-                primaryImage = b.PrimaryImage?.ImagePath ?? "/images/properties/lumina-1.svg"
-            })));
-            initMasterMap(initialProjects);
 
             let debounceTimer;
             const filterSearch = document.getElementById('filterSearch');
@@ -304,17 +208,11 @@
                     const data = await res.json();
 
                     renderProjects(data.projects);
-                    initMasterMap(data.projects);
-                    document.getElementById('mapProjectCount').textContent = `${data.count} Landmarks Pinned`;
                 } catch (err) {
                     console.error('Filter request failed', err);
                 } finally {
                     skeletonContainer.classList.add('d-none');
-                    if (!mapViewContainer.classList.contains('d-none')) {
-                        projectsGrid.classList.add('d-none');
-                    } else {
-                        projectsGrid.classList.remove('d-none');
-                    }
+                    projectsGrid.classList.remove('d-none');
                 }
             }
 
@@ -333,25 +231,26 @@
 
                 let html = '';
                 projects.forEach(p => {
-                    const priceFormatted = p.priceStartingFrom ? `$${Number(p.priceStartingFrom).toLocaleString()}` : 'Price on Request';
                     const statusClass = (p.statusText || '').toLowerCase();
                     const features = (p.structuralFeatures || '').split(',').map(f => f.trim()).filter(f => f.length > 0).slice(0, 3);
                     const featuresHtml = features.map(f => `<span class="badge bg-secondary bg-opacity-10 text-body border border-secondary border-opacity-10 small fw-normal">${f}</span>`).join(' ');
 
                     html += `
                         <div class="col-md-6 col-lg-4 project-item">
-                            <div class="card h-100 glass-card glass-card-hover border-0 overflow-hidden d-flex flex-column">
-                                <div class="position-relative overflow-hidden" style="height: 240px;">
-                                    <img src="${p.primaryImage}" alt="${p.name}" class="w-100 h-100 object-fit-cover" loading="lazy" />
+                            <div class="card h-100 glass-card glass-card-hover border-0 overflow-hidden d-flex flex-column project-card-modern">
+                                <div class="project-card-image-wrap position-relative overflow-hidden">
+                                    <img src="${p.primaryImage}" alt="${p.name}" class="w-100 h-100 project-card-img" loading="lazy" />
                                     <div class="position-absolute top-0 start-0 m-3">
                                         <span class="badge badge-status-${statusClass} shadow-sm">${p.statusText}</span>
                                     </div>
-                                    ${p.completionYear ? `<div class="position-absolute top-0 end-0 m-3"><span class="badge bg-dark bg-opacity-75 text-white shadow-sm">Est. ${p.completionYear}</span></div>` : ''}
+                                    <div class="position-absolute top-0 end-0 m-3 d-flex gap-1">
+                                        <span class="badge bg-primary bg-opacity-90 text-white shadow-sm fw-semibold">${p.propertyType || 'Residential'}</span>
+                                    </div>
                                 </div>
                                 <div class="card-body p-4 d-flex flex-column">
                                     <div class="d-flex justify-content-between align-items-center mb-2">
                                         <span class="badge bg-secondary bg-opacity-10 text-body border small">${p.sisterConcern || 'Recent Properties Ltd'}</span>
-                                        <span class="text-muted small">${p.propertyType || 'Residential'}</span>
+                                        ${p.completionYear ? `<span class="text-muted small"><i class="bi bi-calendar3 me-1"></i>Est. ${p.completionYear}</span>` : ''}
                                     </div>
                                     <h5 class="card-title fw-bold font-serif mb-2 fs-5">
                                         <a href="/projects/${p.slug}" class="text-decoration-none text-body stretched-link">${p.name}</a>
@@ -359,12 +258,11 @@
                                     <p class="text-muted small mb-3"><i class="bi bi-geo-alt me-1 text-primary"></i>${p.address || ''}</p>
                                     <div class="d-flex flex-wrap gap-1 mb-4">${featuresHtml}</div>
                                     <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                                        <div>
-                                            <span class="text-muted small d-block" style="font-size: 11px; text-transform: uppercase;">From</span>
-                                            <span class="fw-bold text-primary fs-5 font-serif">${priceFormatted}</span>
-                                        </div>
+                                        <span class="text-primary fw-semibold small d-inline-flex align-items-center gap-1">
+                                            View Project Details
+                                        </span>
                                         <span class="btn btn-outline-primary btn-sm rounded-circle p-2">
-                                            <i class="bi bi-chevron-right"></i>
+                                            <i class="bi bi-arrow-right"></i>
                                         </span>
                                     </div>
                                 </div>

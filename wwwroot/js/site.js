@@ -1,18 +1,18 @@
-﻿/**
+/**
  * Dynamic Real Estate Portfolio Platform - Client Application Script
  */
 
 (function () {
   "use strict";
 
-  // 1. Theme Management (Bootstrap 5.3 data-bs-theme)
+  // 1. Theme Management (Default clean light theme)
   const getStoredTheme = () => localStorage.getItem("theme");
   const setStoredTheme = (theme) => localStorage.setItem("theme", theme);
 
   const getPreferredTheme = () => {
     const storedTheme = getStoredTheme();
     if (storedTheme) return storedTheme;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    return "light";
   };
 
   const setTheme = (theme) => {
@@ -30,7 +30,21 @@
   setTheme(getPreferredTheme());
 
   document.addEventListener("DOMContentLoaded", () => {
-    // Theme Toggle Button
+    // 2. Navbar elevation on scroll
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+      const handleNavScroll = () => {
+        if (window.scrollY > 30) {
+          navbar.classList.add('navbar-scrolled');
+        } else {
+          navbar.classList.remove('navbar-scrolled');
+        }
+      };
+      window.addEventListener('scroll', handleNavScroll, { passive: true });
+      handleNavScroll();
+    }
+
+    // Theme Toggle Button (if present)
     const themeToggleBtn = document.getElementById("themeToggleBtn");
     if (themeToggleBtn) {
       themeToggleBtn.addEventListener("click", () => {
@@ -47,11 +61,11 @@
         duration: 750,
         easing: "ease-out-cubic",
         once: true,
-        offset: 60
+        offset: 50
       });
     }
 
-    // Setup AJAX Inquiry Modals
+    // Setup AJAX Inquiry Modals & Forms
     const ajaxInquiryForms = document.querySelectorAll(".ajax-inquiry-form");
     ajaxInquiryForms.forEach((form) => {
       form.addEventListener("submit", async (e) => {
@@ -83,24 +97,25 @@
 
           if (alertBox) {
             alertBox.className = "alert alert-success mt-3";
-            alertBox.textContent = result.message || "Inquiry received successfully!";
+            alertBox.textContent = result.message || "Thank you! Your inquiry has been received.";
             alertBox.classList.remove("d-none");
           }
           form.reset();
         } catch (err) {
           if (alertBox) {
             alertBox.className = "alert alert-danger mt-3";
-            alertBox.textContent = "Failed to transmit inquiry. Please try again or reach out directly.";
+            alertBox.textContent = "Failed to transmit inquiry. Please reach out to our office directly.";
             alertBox.classList.remove("d-none");
           }
         } finally {
           if (submitBtn) {
             submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="bi bi-send-fill me-2"></i>Send VIP Inquiry';
+            submitBtn.innerHTML = '<i class="bi bi-send-fill me-2"></i>Send Inquiry';
           }
         }
       });
     });
+
     // Setup Hero Media Banner: Video with Seamless Transition to Image Carousel
     const heroMediaBanner = document.getElementById("heroMediaBanner");
     if (heroMediaBanner) {
@@ -109,14 +124,55 @@
       const heroSwiperEl = document.getElementById("heroSwiper");
       const heroPrevBtn = document.getElementById("heroPrevBtn");
       const heroNextBtn = document.getElementById("heroNextBtn");
-      const heroMediaToggleBtn = document.getElementById("heroMediaToggleBtn");
-      const heroMediaToggleIcon = document.getElementById("heroMediaToggleIcon");
-      const heroMediaToggleText = document.getElementById("heroMediaToggleText");
       const heroAudioToggleBtn = document.getElementById("heroAudioToggleBtn");
       const heroAudioIcon = document.getElementById("heroAudioIcon");
+      const heroAudioText = document.getElementById("heroAudioText");
 
       let isShowingVideo = true;
       let heroSwiper = null;
+
+      const updateAudioUI = () => {
+        if (!heroAudioIcon) return;
+        if (heroVideo && heroVideo.muted) {
+          heroAudioIcon.className = "bi bi-volume-mute-fill";
+          if (heroAudioText) heroAudioText.textContent = "Sound Off";
+        } else {
+          heroAudioIcon.className = "bi bi-volume-up-fill";
+          if (heroAudioText) heroAudioText.textContent = "Sound On";
+        }
+      };
+
+      // Video Music Autoplay First
+      if (heroVideo) {
+        heroVideo.muted = false;
+        heroVideo.volume = 1.0;
+        updateAudioUI();
+
+        const playPromise = heroVideo.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {
+            // Browser restricted unmuted autoplay: start muted and immediately unmute on first gesture
+            heroVideo.muted = true;
+            updateAudioUI();
+            heroVideo.play().catch(() => {});
+
+            const autoUnmuteOnGesture = () => {
+              if (heroVideo) {
+                heroVideo.muted = false;
+                heroVideo.volume = 1.0;
+                updateAudioUI();
+              }
+              ['pointerdown', 'touchstart', 'click', 'scroll', 'keydown'].forEach(evt => {
+                window.removeEventListener(evt, autoUnmuteOnGesture);
+              });
+            };
+
+            ['pointerdown', 'touchstart', 'click', 'scroll', 'keydown'].forEach(evt => {
+              window.addEventListener(evt, autoUnmuteOnGesture, { once: true, passive: true });
+            });
+          });
+        }
+      }
 
       // Initialize Swiper Carousel for the 3 uploaded images
       if (typeof Swiper !== "undefined" && heroSwiperEl) {
@@ -151,9 +207,6 @@
         }
         isShowingVideo = false;
 
-        if (heroMediaToggleText) heroMediaToggleText.textContent = "Watch Video";
-        if (heroMediaToggleIcon) heroMediaToggleIcon.className = "bi bi-play-circle-fill";
-
         if (heroSwiper) {
           heroSwiper.autoplay.start();
           if (slideDirection === "next") {
@@ -174,14 +227,12 @@
           if (playPromise !== undefined) {
             playPromise.catch(() => {
               heroVideo.muted = true;
-              heroVideo.play();
+              updateAudioUI();
+              heroVideo.play().catch(() => {});
             });
           }
         }
         isShowingVideo = true;
-
-        if (heroMediaToggleText) heroMediaToggleText.textContent = "View Photos";
-        if (heroMediaToggleIcon) heroMediaToggleIcon.className = "bi bi-images";
 
         if (heroSwiper) {
           heroSwiper.autoplay.stop();
@@ -227,26 +278,15 @@
         });
       }
 
-      // 4. Mode Switch Button (Watch Video <-> View Photos)
-      if (heroMediaToggleBtn) {
-        heroMediaToggleBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          if (isShowingVideo) {
-            showCarousel();
-          } else {
-            showVideo();
-          }
-        });
-      }
-
-      // 5. Audio Mute / Unmute Button
+      // 4. Audio Mute / Unmute Button
       if (heroAudioToggleBtn && heroVideo) {
         heroAudioToggleBtn.addEventListener("click", (e) => {
           e.stopPropagation();
           heroVideo.muted = !heroVideo.muted;
-          if (heroAudioIcon) {
-            heroAudioIcon.className = heroVideo.muted ? "bi bi-volume-mute-fill" : "bi bi-volume-up-fill";
+          if (!heroVideo.muted && heroVideo.paused && isShowingVideo) {
+            heroVideo.play().catch(() => {});
           }
+          updateAudioUI();
         });
       }
     }

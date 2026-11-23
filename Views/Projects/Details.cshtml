@@ -2,7 +2,6 @@
 
 @{
     var b = Model.Building;
-    var priceFormatted = b.PriceStartingFrom.HasValue ? $"${b.PriceStartingFrom:N0}" : "Price on Request";
     var sisterConcern = b.SisterConcern ?? "Recent Properties Ltd";
 }
 
@@ -38,9 +37,11 @@
                 <p class="text-muted lead fs-6 mb-0"><i class="bi bi-geo-alt-fill text-primary me-2"></i>@b.Address</p>
             </div>
 
-            <div class="text-md-end">
-                <span class="text-muted small d-block text-uppercase tracking-wider">Starting Price</span>
-                <span class="display-6 fw-bold text-primary font-serif">@priceFormatted</span>
+            <div>
+                <a href="#inquiry-section" class="btn btn-primary rounded-pill px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2 shadow-sm">
+                    <i class="bi bi-chat-dots-fill"></i>
+                    <span>Inquire Now</span>
+                </a>
             </div>
         </div>
 
@@ -133,51 +134,40 @@
                     </div>
                 }
 
-                <!-- Leaflet Interactive Map & Nearby Amenities -->
+                <!-- Location & Neighborhood Information -->
                 <div class="glass-card p-4 p-lg-5 mb-4">
-                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-3">
+                    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
                         <div>
-                            <h4 class="fw-bold mb-1 font-serif"><i class="bi bi-geo-alt-fill text-primary me-2"></i>Location & Connectivity</h4>
-                            <p class="text-muted small mb-0">Interactive Leaflet map centered at @b.Address</p>
+                            <h4 class="fw-bold mb-1 font-serif"><i class="bi bi-geo-alt-fill text-primary me-2"></i>Prime Location</h4>
+                            <p class="text-muted small mb-0">@(b.Address ?? "Dhaka, Bangladesh")</p>
+                        </div>
+                        <a href="https://www.google.com/maps/search/?api=1&query=@Uri.EscapeDataString(b.Address ?? (b.Name + " Dhaka Bangladesh"))" target="_blank" rel="noopener noreferrer" class="btn btn-outline-primary rounded-pill px-4 py-2 small fw-semibold d-inline-flex align-items-center gap-2">
+                            <i class="bi bi-map-fill"></i>
+                            <span>Open in Google Maps</span>
+                        </a>
+                    </div>
+                    <div class="p-4 rounded-3 bg-body border">
+                        <div class="row g-3">
+                            <div class="col-md-4">
+                                <small class="text-muted d-block mb-1">Region</small>
+                                <strong class="text-body"><i class="bi bi-compass me-1 text-primary"></i>Dhaka Metro</strong>
+                            </div>
+                            <div class="col-md-4">
+                                <small class="text-muted d-block mb-1">Development Wing</small>
+                                <strong class="text-primary"><i class="bi bi-building me-1"></i>@sisterConcern</strong>
+                            </div>
+                            <div class="col-md-4">
+                                <small class="text-muted d-block mb-1">Status</small>
+                                <strong class="text-success"><i class="bi bi-check2-circle me-1"></i>@b.Status</strong>
+                            </div>
                         </div>
                     </div>
-
-                    <!-- Amenity Category Filters -->
-                    <div class="d-flex flex-wrap gap-2 mb-3">
-                        <span class="text-muted small align-self-center me-2">Nearby Amenities:</span>
-                        <span class="amenity-chip badge bg-primary text-white active" data-type="all"><i class="bi bi-grid"></i> All</span>
-                        <span class="amenity-chip badge bg-secondary bg-opacity-25 text-body" data-type="transit"><i class="bi bi-train-front"></i> Metro / Transit</span>
-                        <span class="amenity-chip badge bg-secondary bg-opacity-25 text-body" data-type="education"><i class="bi bi-mortarboard"></i> Schools</span>
-                        <span class="amenity-chip badge bg-secondary bg-opacity-25 text-body" data-type="hospital"><i class="bi bi-hospital"></i> Medical</span>
-                        <span class="amenity-chip badge bg-secondary bg-opacity-25 text-body" data-type="lifestyle"><i class="bi bi-bag"></i> Luxury Retail</span>
-                    </div>
-
-                    <div id="propertyLeafletMap" class="map-container shadow-sm"></div>
                 </div>
             </div>
 
-            <!-- Right Column: Brochure Download CTA & Inquiry Form -->
+            <!-- Right Column: Direct Inquiry Form -->
             <div class="col-lg-4">
-                <div class="sticky-top" style="top: 100px; z-index: 10;">
-                    <!-- Brochure Download Card -->
-                    <div class="glass-card p-4 mb-4 border-primary border-opacity-50">
-                        <div class="d-flex align-items-center gap-3 mb-3">
-                            <span class="p-3 rounded-3 bg-primary bg-opacity-10 text-primary fs-3">
-                                <i class="bi bi-file-earmark-pdf-fill"></i>
-                            </span>
-                            <div>
-                                <h5 class="fw-bold mb-0 font-serif">Property Brochure</h5>
-                                <small class="text-muted">By @sisterConcern</small>
-                            </div>
-                        </div>
-                        <p class="text-muted small mb-3 lh-base">
-                            Download the certified architectural portfolio, high-resolution floor plans, and engineering specifications.
-                        </p>
-                        <a asp-action="DownloadBrochure" asp-route-id="@b.Id" class="btn btn-primary w-100 rounded-pill py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2">
-                            <i class="bi bi-download"></i> Download Floorplans (PDF)
-                        </a>
-                    </div>
-
+                <div class="sticky-top" style="top: 100px; z-index: 10;" id="inquiry-section">
                     <!-- Direct Inquiry Form -->
                     <div class="glass-card p-4">
                         <h5 class="fw-bold mb-1 font-serif">Inquire About This Property</h5>
@@ -234,17 +224,19 @@
                     @foreach (var sim in Model.SimilarProjects)
                     {
                         <div class="col-md-4">
-                            <div class="card h-100 glass-card glass-card-hover border-0 overflow-hidden d-flex flex-column">
-                                <div class="position-relative overflow-hidden" style="height: 200px;">
-                                    <img src="@(sim.PrimaryImage?.ImagePath ?? "/images/properties/lumina-1.svg")" alt="@sim.Name" class="w-100 h-100 object-fit-cover" loading="lazy" />
+                            <div class="card h-100 glass-card glass-card-hover border-0 overflow-hidden d-flex flex-column project-card-modern">
+                                <div class="project-card-image-wrap position-relative overflow-hidden">
+                                    <img src="@(sim.PrimaryImage?.ImagePath ?? "/images/properties/lumina-1.svg")" alt="@sim.Name" class="w-100 h-100 project-card-img" loading="lazy" />
                                     <div class="position-absolute top-0 start-0 m-3">
                                         <span class="badge badge-status-@(sim.Status.ToString().ToLower()) shadow-sm">@sim.Status</span>
+                                    </div>
+                                    <div class="position-absolute top-0 end-0 m-3">
+                                        <span class="badge bg-primary bg-opacity-90 text-white shadow-sm fw-semibold">@(sim.PropertyType ?? "Residential")</span>
                                     </div>
                                 </div>
                                 <div class="card-body p-4 d-flex flex-column">
                                     <div class="d-flex justify-content-between align-items-center mb-1">
                                         <span class="badge bg-secondary bg-opacity-10 text-body border small">@(sim.SisterConcern ?? "Recent Properties Ltd")</span>
-                                        <span class="text-muted small">@(sim.PropertyType ?? "Residential")</span>
                                     </div>
                                     <h5 class="card-title fw-bold font-serif mb-2 fs-6">
                                         <a asp-action="Details" asp-route-slug="@sim.Slug" class="text-decoration-none text-body stretched-link">
@@ -253,8 +245,10 @@
                                     </h5>
                                     <p class="text-muted small mb-3"><i class="bi bi-geo-alt me-1 text-primary"></i>@sim.Address</p>
                                     <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                                        <span class="fw-bold text-primary font-serif">@(sim.PriceStartingFrom.HasValue ? $"${sim.PriceStartingFrom:N0}" : "Price on Request")</span>
-                                        <span class="btn btn-outline-primary btn-sm rounded-circle p-2"><i class="bi bi-chevron-right"></i></span>
+                                        <span class="text-primary fw-semibold small d-inline-flex align-items-center gap-1">
+                                            View Details
+                                        </span>
+                                        <span class="btn btn-outline-primary btn-sm rounded-circle p-2"><i class="bi bi-arrow-right"></i></span>
                                     </div>
                                 </div>
                             </div>
@@ -295,63 +289,7 @@
                 },
             });
 
-            const lat = @b.Latitude;
-            const lng = @b.Longitude;
-            const propertyName = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(b.Name));
-            const address = @Html.Raw(System.Text.Json.JsonSerializer.Serialize(b.Address));
 
-            const propMap = L.map('propertyLeafletMap').setView([lat, lng], 15);
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; OpenStreetMap contributors'
-            }).addTo(propMap);
-
-            const propertyMarker = L.marker([lat, lng]).addTo(propMap);
-            propertyMarker.bindPopup(`<b>${propertyName}</b><br><small>${address}</small>`).openPopup();
-
-            const amenities = [
-                { type: 'transit', name: 'Metro Express Station', lat: lat + 0.0032, lng: lng + 0.0028, icon: '🚇' },
-                { type: 'education', name: 'International Academy', lat: lat - 0.0025, lng: lng + 0.0041, icon: '🎓' },
-                { type: 'hospital', name: 'University Medical Center', lat: lat + 0.0048, lng: lng - 0.0035, icon: '🏥' },
-                { type: 'lifestyle', name: 'Luxury Retail & Dining', lat: lat - 0.0038, lng: lng - 0.0022, icon: '🛍️' }
-            ];
-
-            let amenityMarkers = [];
-
-            function renderAmenityMarkers(filterType) {
-                amenityMarkers.forEach(m => propMap.removeLayer(m));
-                amenityMarkers = [];
-
-                amenities.forEach(a => {
-                    if (filterType === 'all' || a.type === filterType) {
-                        const amMarker = L.circleMarker([a.lat, a.lng], {
-                            radius: 8,
-                            fillColor: '#0284c7',
-                            color: '#ffffff',
-                            weight: 2,
-                            opacity: 1,
-                            fillOpacity: 0.9
-                        }).addTo(propMap);
-                        amMarker.bindPopup(`<b>${a.icon} ${a.name}</b><br><small class="text-capitalize">Category: ${a.type}</small>`);
-                        amenityMarkers.push(amMarker);
-                    }
-                });
-            }
-
-            renderAmenityMarkers('all');
-
-            document.querySelectorAll('.amenity-chip').forEach(chip => {
-                chip.addEventListener('click', () => {
-                    document.querySelectorAll('.amenity-chip').forEach(c => {
-                        c.classList.remove('bg-primary', 'text-white', 'active');
-                        c.classList.add('bg-secondary', 'bg-opacity-25', 'text-body');
-                    });
-                    chip.classList.add('bg-primary', 'text-white', 'active');
-                    chip.classList.remove('bg-secondary', 'bg-opacity-25', 'text-body');
-
-                    const type = chip.getAttribute('data-type');
-                    renderAmenityMarkers(type);
-                });
-            });
         });
     </script>
 }

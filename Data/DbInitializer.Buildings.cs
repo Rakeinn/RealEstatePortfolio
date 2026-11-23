@@ -1,4 +1,4 @@
-﻿using RealEstatePortfolio.Models.Entities;
+using RealEstatePortfolio.Models.Entities;
 
 namespace RealEstatePortfolio.Data
 {
@@ -18,7 +18,7 @@ namespace RealEstatePortfolio.Data
                 Status = ProjectStatus.Completed,
                 CompletionYear = 2024,
                 SisterConcern = "Recent Living Ltd",
-                PropertyType = "Ultra-Luxury Residential",
+                PropertyType = "Residential",
                 PriceStartingFrom = 45000000m,
                 TotalUnits = 14,
                 StructuralFeatures = "BNBC Code Earthquake-Resistant RCC Frame, European Double-Glazed Soundproof Glass, 100% Full Power Generator Backup, Rooftop Infinity Lap Pool, Imported Marble Finishes",
@@ -39,7 +39,7 @@ namespace RealEstatePortfolio.Data
                 Status = ProjectStatus.Ongoing,
                 CompletionYear = 2026,
                 SisterConcern = "Recent Properties Ltd",
-                PropertyType = "Lakeside Condominiums & Penthouses",
+                PropertyType = "Residential",
                 PriceStartingFrom = 68000000m,
                 TotalUnits = 18,
                 StructuralFeatures = "Deep Substructure Piling, Lakefront Green Terraces, Sub-Zero VRF Air-Conditioning, High-Speed Mitsubishi Elevators, Smart Home Automation",
@@ -60,7 +60,7 @@ namespace RealEstatePortfolio.Data
                 Status = ProjectStatus.Upcoming,
                 CompletionYear = 2027,
                 SisterConcern = "Recent Living Ltd",
-                PropertyType = "Biophilic Eco-Condominiums",
+                PropertyType = "Residential",
                 PriceStartingFrom = 28000000m,
                 TotalUnits = 24,
                 StructuralFeatures = "Solar Rooftop Net-Metering, Rainwater Harvesting, Hydroponic Green Vertical Facade, Thermal Insulated Exterior Walls, Children's Eco-Play Area",
@@ -81,7 +81,7 @@ namespace RealEstatePortfolio.Data
                 Status = ProjectStatus.Completed,
                 CompletionYear = 2023,
                 SisterConcern = "Recent Properties Ltd",
-                PropertyType = "Commercial Landmark & Corporate Suites",
+                PropertyType = "Commercial",
                 PriceStartingFrom = 95000000m,
                 TotalUnits = 12,
                 StructuralFeatures = "Steel Diagrid Framework, Column-Free Floorplates, Double-Glazed Low-E Glass Curtain Wall, 3 Basements for Ample Parking, NFPA-Compliant Fire Fighting",
@@ -102,7 +102,7 @@ namespace RealEstatePortfolio.Data
                 Status = ProjectStatus.Ongoing,
                 CompletionYear = 2025,
                 SisterConcern = "Recent Living Interior",
-                PropertyType = "Bespoke Interior & Sky Duplexes",
+                PropertyType = "Mix",
                 PriceStartingFrom = 52000000m,
                 TotalUnits = 10,
                 StructuralFeatures = "Teak & Oak Artisanal Joinery, Custom Italian Kitchen Cabinetry, Private Rooftop Garden, Soundproof Acoustic Partitioning, Smart Ambient Lighting",
@@ -123,7 +123,7 @@ namespace RealEstatePortfolio.Data
                 Status = ProjectStatus.Upcoming,
                 CompletionYear = 2027,
                 SisterConcern = "Recent Living Ltd",
-                PropertyType = "Modern Lifestyle Condominiums",
+                PropertyType = "Residential",
                 PriceStartingFrom = 32000000m,
                 TotalUnits = 20,
                 StructuralFeatures = "Earthquake Resilient Foundation, Resident Gymnasium, Community Hall, Modern Fire Safety Sprinklers, High-Speed Dual Elevators",

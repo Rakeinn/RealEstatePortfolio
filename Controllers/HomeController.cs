@@ -39,6 +39,7 @@ namespace RealEstatePortfolio.Controllers
             var viewModel = new HomeViewModel
             {
                 FeaturedProjects = featured,
+                RecentProjects = featured,
                 Content = cmsContent,
                 TotalProjectsCount = totalCount,
                 CompletedProjectsCount = completedCount,

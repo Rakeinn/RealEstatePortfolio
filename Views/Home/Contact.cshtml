@@ -3,10 +3,10 @@
 @{
     ViewData["Title"] = "Contact Recent Group | Recent Properties, Living & Interior";
     var cms = ViewBag.ContactContent as Dictionary<string, string> ?? new Dictionary<string, string>();
-    var address = cms.GetValueOrDefault("Office_Address", "Recent Group Corporate Tower, Level 24, 742 Fifth Avenue, New York, NY 10019");
-    var phone = cms.GetValueOrDefault("Office_Phone", "+1 (212) 555-0198");
+    var address = cms.GetValueOrDefault("Office_Address", "Recent Group Corporate Tower, Road 11, Banani / Gulshan, Dhaka 1213, Bangladesh");
+    var phone = cms.GetValueOrDefault("Office_Phone", "+880 2 9876543 / +880 1711 000000");
     var email = cms.GetValueOrDefault("Office_Email", "info@recentgroup.com");
-    var hours = cms.GetValueOrDefault("Operating_Hours", "Monday - Friday: 08:30 AM - 06:30 PM EST");
+    var hours = cms.GetValueOrDefault("Operating_Hours", "Saturday - Thursday: 09:30 AM - 07:00 PM BST");
 }
 
 <section class="py-5 bg-body-tertiary border-bottom">
@@ -26,7 +26,7 @@
             <div class="col-lg-5" data-aos="fade-right">
                 <div class="glass-card p-4 p-lg-5 h-100 d-flex flex-column justify-content-between">
                     <div>
-                        <span class="badge-editorial mb-3">Global Headquarters</span>
+                        <span class="badge-editorial mb-3">Corporate Office</span>
                         <h3 class="fw-bold mb-4 font-serif">Recent Group Tower</h3>
 
                         <div class="d-flex flex-column gap-4 text-muted">
@@ -116,19 +116,19 @@
 
                             <div class="col-md-6">
                                 <label asp-for="ClientName" class="form-label small fw-semibold">Full Name *</label>
-                                <input asp-for="ClientName" class="form-control rounded-3 py-2" placeholder="e.g. Eleanor Vance" />
+                                <input asp-for="ClientName" class="form-control rounded-3 py-2" placeholder="Full Name" />
                                 <span asp-validation-for="ClientName" class="text-danger small"></span>
                             </div>
 
                             <div class="col-md-6">
                                 <label asp-for="EmailAddress" class="form-label small fw-semibold">Email Address *</label>
-                                <input asp-for="EmailAddress" class="form-control rounded-3 py-2" placeholder="eleanor@domain.com" />
+                                <input asp-for="EmailAddress" class="form-control rounded-3 py-2" placeholder="name@email.com" />
                                 <span asp-validation-for="EmailAddress" class="text-danger small"></span>
                             </div>
 
                             <div class="col-md-6">
                                 <label asp-for="PhoneNumber" class="form-label small fw-semibold">Phone Number</label>
-                                <input asp-for="PhoneNumber" class="form-control rounded-3 py-2" placeholder="+1 (555) 012-3456" />
+                                <input asp-for="PhoneNumber" class="form-control rounded-3 py-2" placeholder="+880 1711 000000" />
                                 <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
                             </div>
 
@@ -146,7 +146,7 @@
 
                             <div class="col-12 mt-4">
                                 <button type="submit" class="btn btn-primary rounded-pill px-5 py-3 w-100 fw-bold shadow-sm">
-                                    <i class="bi bi-send-fill me-2"></i>Dispatch Inquiry to Recent Group
+                                    <i class="bi bi-send-fill me-2"></i>Submit Inquiry
                                 </button>
                             </div>
                         </div>
@@ -166,13 +166,13 @@
     <partial name="_ValidationScriptsPartial" />
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const map = L.map('officeMap').setView([40.7638, -73.9730], 14);
+            const map = L.map('officeMap').setView([23.7937, 90.4066], 15);
             L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
                 attribution: '&copy; OpenStreetMap contributors'
             }).addTo(map);
 
-            const marker = L.marker([40.7638, -73.9730]).addTo(map);
-            marker.bindPopup('<b>Recent Group Corporate Tower</b><br>Level 24, 742 Fifth Avenue, New York, NY').openPopup();
+            const marker = L.marker([23.7937, 90.4066]).addTo(map);
+            marker.bindPopup('<b>Recent Group Corporate Tower</b><br>Road 11, Banani / Gulshan, Dhaka 1213, Bangladesh').openPopup();
         });
     </script>
 }

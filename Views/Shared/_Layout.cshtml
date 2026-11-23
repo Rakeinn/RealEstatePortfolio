@@ -72,24 +72,18 @@
                 </ul>
 
                 <div class="d-flex align-items-center gap-2">
-                    <!-- Theme Toggle Switch -->
-                    <button id="themeToggleBtn" class="btn btn-outline-secondary rounded-pill px-3 py-2 d-flex align-items-center gap-2" type="button" title="Toggle Light/Dark Theme">
-                        <i id="themeIcon" class="bi bi-moon-stars-fill"></i>
-                        <span id="themeText" class="d-none d-xl-inline small">Dark</span>
-                    </button>
-
                     @if (SignInManager.IsSignedIn(User))
                     {
                         <div class="dropdown">
                             <button class="btn btn-primary rounded-pill px-3 py-2 dropdown-toggle d-flex align-items-center gap-2" type="button" data-bs-toggle="dropdown">
-                                <i class="bi bi-shield-lock-fill"></i>
-                                <span class="d-none d-sm-inline">Admin Portal</span>
+                                <i class="bi bi-person-fill-gear"></i>
+                                <span>Admin</span>
                             </button>
                             <ul class="dropdown-menu dropdown-menu-end glass-card p-2 shadow-lg">
-                                <li><a class="dropdown-item rounded-2 py-2" asp-controller="Admin" asp-action="Dashboard"><i class="bi bi-speedometer2 me-2"></i>Executive Analytics</a></li>
-                                <li><a class="dropdown-item rounded-2 py-2" asp-controller="Admin" asp-action="Projects"><i class="bi bi-building me-2"></i>Portfolio CRUD</a></li>
-                                <li><a class="dropdown-item rounded-2 py-2" asp-controller="Admin" asp-action="Content"><i class="bi bi-file-earmark-text me-2"></i>Dynamic CMS Engine</a></li>
-                                <li><a class="dropdown-item rounded-2 py-2" asp-controller="Admin" asp-action="Leads"><i class="bi bi-inbox me-2"></i>Lead Inbox</a></li>
+                                <li><a class="dropdown-item rounded-2 py-2" asp-controller="Admin" asp-action="Dashboard"><i class="bi bi-speedometer2 me-2"></i>Dashboard</a></li>
+                                <li><a class="dropdown-item rounded-2 py-2" asp-controller="Admin" asp-action="Projects"><i class="bi bi-building me-2"></i>Projects</a></li>
+                                <li><a class="dropdown-item rounded-2 py-2" asp-controller="Admin" asp-action="Content"><i class="bi bi-file-earmark-text me-2"></i>Page Content</a></li>
+                                <li><a class="dropdown-item rounded-2 py-2" asp-controller="Admin" asp-action="Leads"><i class="bi bi-inbox me-2"></i>Inquiries</a></li>
                                 <li><hr class="dropdown-divider"></li>
                                 <li>
                                     <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline">
@@ -101,8 +95,9 @@
                     }
                     else
                     {
-                        <a class="btn btn-outline-primary rounded-pill px-3 py-2" asp-controller="Account" asp-action="Login">
-                            <i class="bi bi-lock-fill me-1"></i> Admin Portal
+                        <a class="btn btn-primary rounded-pill px-4 py-2 small fw-semibold shadow-sm d-inline-flex align-items-center gap-2" asp-controller="Home" asp-action="Contact">
+                            <i class="bi bi-chat-dots-fill"></i>
+                            <span>Get in Touch</span>
                         </a>
                     }
                 </div>
@@ -136,73 +131,60 @@
         @RenderBody()
     </main>
 
-    <!-- Corporate Footer -->
-    <footer class="glass-nav border-top mt-5 py-5">
+    <!-- Simplified Human-Crafted Footer -->
+    <footer class="glass-nav border-top mt-5 py-5 site-footer">
         <div class="container">
-            <div class="row g-4">
-                <!-- Group Identity -->
-                <div class="col-lg-3">
-                    <a class="d-flex align-items-center gap-2 text-decoration-none text-body mb-3" asp-controller="Home" asp-action="Index">
-                        <img src="/images/logo.png" alt="Recent Group Logo" style="height: 44px; object-fit: contain;" class="rounded-2" />
-                        <span class="fw-bold fs-4"><span class="text-primary">RECENT</span> <span class="text-success">GROUP</span></span>
+            <div class="row g-4 justify-content-between align-items-start">
+                <!-- 1. Brand Identity -->
+                <div class="col-lg-5 col-md-6">
+                    <a class="d-inline-flex align-items-center gap-2 text-decoration-none text-body mb-3" asp-controller="Home" asp-action="Index">
+                        <img src="/images/logo.png" alt="Recent Living Ltd Logo" style="height: 48px; width: 48px; object-fit: contain;" />
+                        <div>
+                            <span class="fw-bold fs-5 tracking-wider lh-1 d-block"><span class="text-primary">RECENT</span> <span class="text-success">GROUP</span></span>
+                            <small class="text-muted" style="font-size: 11px;">Recent Living Ltd. &bull; <em>Better Lifestyle…</em></small>
+                        </div>
                     </a>
-                    <p class="text-muted small pe-lg-2 lh-lg mb-3">
-                        Recent Living Ltd. (<em>Better Lifestyle…</em>) & Recent Group — A trusted conglomerate creating thoughtfully designed homes and commercial spaces in Bangladesh.
+                    <p class="text-muted small pe-lg-4 lh-lg mb-3">
+                        Creating thoughtfully designed homes and commercial spaces across Bangladesh that enrich people's lives and contribute to better communities through quality, trust, and lasting value.
                     </p>
-                    <div class="d-flex gap-2 text-muted">
-                        <span class="badge bg-body border py-2 px-3 small">Dhaka, Bangladesh</span>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-body border text-muted py-2 px-3 small"><i class="bi bi-geo-alt-fill text-danger me-1"></i>Dhaka, Bangladesh</span>
                     </div>
                 </div>
 
-                <!-- Sister Concern 1: Recent Properties Ltd -->
-                <div class="col-6 col-lg-3">
-                    <h6 class="fw-bold text-uppercase small tracking-wider mb-2 text-primary">
-                        <i class="bi bi-building me-1"></i> Recent Properties Ltd
-                    </h6>
-                    <p class="text-muted" style="font-size: 11px;">Land Development & Civil High-Rises</p>
-                    <ul class="list-unstyled small d-flex flex-column gap-2 text-muted">
-                        <li><a class="text-muted text-decoration-none" asp-controller="Projects" asp-action="Index" asp-route-sisterConcern="Recent Properties Ltd">Commercial Towers</a></li>
-                        <li><a class="text-muted text-decoration-none" asp-controller="Projects" asp-action="Index" asp-route-sisterConcern="Recent Properties Ltd">Waterfront Landmarks</a></li>
-                        <li><a class="text-muted text-decoration-none" asp-controller="Projects" asp-action="Index" asp-route-sisterConcern="Recent Properties Ltd">Land Acquisitions</a></li>
+                <!-- 2. Quick Navigation -->
+                <div class="col-lg-3 col-6">
+                    <h6 class="fw-bold text-uppercase small tracking-wider mb-3 font-serif">Quick Links</h6>
+                    <ul class="list-unstyled small d-flex flex-column gap-2 text-muted mb-0">
+                        <li><a class="text-muted text-decoration-none footer-link" asp-controller="Home" asp-action="Index"><i class="bi bi-chevron-right small me-1"></i>Home</a></li>
+                        <li><a class="text-muted text-decoration-none footer-link" asp-controller="Projects" asp-action="Index"><i class="bi bi-chevron-right small me-1"></i>Our Projects</a></li>
+                        <li><a class="text-muted text-decoration-none footer-link" asp-controller="Home" asp-action="About"><i class="bi bi-chevron-right small me-1"></i>About Us</a></li>
+                        <li><a class="text-muted text-decoration-none footer-link" asp-controller="Home" asp-action="Living"><i class="bi bi-chevron-right small me-1"></i>Recent Living Ltd.</a></li>
+                        <li><a class="text-muted text-decoration-none footer-link" asp-controller="Home" asp-action="Contact"><i class="bi bi-chevron-right small me-1"></i>Contact Us</a></li>
                     </ul>
                 </div>
 
-                <!-- Sister Concern 2: Recent Living Ltd -->
-                <div class="col-6 col-lg-3">
-                    <h6 class="fw-bold text-uppercase small tracking-wider mb-2 text-success">
-                        <i class="bi bi-houses me-1"></i> Recent Living Ltd
-                    </h6>
-                    <p class="text-muted" style="font-size: 11px;">Modern Residential & Eco-Communities</p>
-                    <ul class="list-unstyled small d-flex flex-column gap-2 text-muted">
-                        <li><a class="text-muted text-decoration-none" asp-controller="Projects" asp-action="Index" asp-route-sisterConcern="Recent Living Ltd">Smart Condominiums</a></li>
-                        <li><a class="text-muted text-decoration-none" asp-controller="Projects" asp-action="Index" asp-route-sisterConcern="Recent Living Ltd">Biophilic Sanctuaries</a></li>
-                        <li><a class="text-muted text-decoration-none" asp-controller="Projects" asp-action="Index" asp-route-sisterConcern="Recent Living Ltd">Duplex Sky Homes</a></li>
-                    </ul>
-                </div>
-
-                <!-- Sister Concern 3: Recent Living Interior -->
-                <div class="col-lg-3">
-                    <h6 class="fw-bold text-uppercase small tracking-wider mb-2 text-warning">
-                        <i class="bi bi-palette me-1"></i> Recent Living Interior
-                    </h6>
-                    <p class="text-muted" style="font-size: 11px;">Interior Architecture & Turnkey Fit-Outs</p>
-                    <ul class="list-unstyled small d-flex flex-column gap-2 text-muted mb-3">
-                        <li><a class="text-muted text-decoration-none" asp-controller="Projects" asp-action="Index" asp-route-sisterConcern="Recent Living Interior">Bespoke Living Salons</a></li>
-                        <li><a class="text-muted text-decoration-none" asp-controller="Projects" asp-action="Index" asp-route-sisterConcern="Recent Living Interior">Artisanal Joinery & Decor</a></li>
-                        <li><a class="text-muted text-decoration-none" asp-controller="Projects" asp-action="Index" asp-route-sisterConcern="Recent Living Interior">Turnkey Penthouse Fit-Outs</a></li>
-                    </ul>
-                    <div class="border-top pt-2">
-                        <small class="text-muted d-block"><i class="bi bi-envelope me-1 text-primary"></i>info@recentgroup.com</small>
-                        <small class="text-muted d-block"><i class="bi bi-telephone me-1 text-primary"></i>+1 (212) 555-0198</small>
-                    </div>
+                <!-- 3. Get in Touch -->
+                <div class="col-lg-3 col-6">
+                    <h6 class="fw-bold text-uppercase small tracking-wider mb-3 font-serif">Connect</h6>
+                    <p class="text-muted small mb-3">
+                        Interested in apartments or transparent Joint Venture landowner partnerships?
+                    </p>
+                    <a asp-controller="Home" asp-action="Contact" class="btn btn-primary rounded-pill px-4 py-2 small fw-semibold shadow-sm d-inline-flex align-items-center gap-2">
+                        <i class="bi bi-envelope-fill"></i>
+                        <span>Contact Us</span>
+                    </a>
                 </div>
             </div>
 
-            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center border-top pt-4 mt-4 text-muted small">
-                <p class="mb-0">&copy; @DateTime.UtcNow.Year Recent Group. All Rights Reserved. (Recent Properties Ltd • Recent Living Ltd • Recent Living Interior)</p>
-                <div class="d-flex gap-3 mt-2 mt-sm-0">
-                    <span class="text-muted">ISO 9001 Certified</span>
-                    <span class="text-muted">LEED Platinum Accredited</span>
+            <!-- Bottom Copyright Bar -->
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center border-top pt-4 mt-5 text-muted small">
+                <p class="mb-0">&copy; @DateTime.UtcNow.Year Recent Living Ltd. (Tagline: <em>Better Lifestyle…</em>). All Rights Reserved.</p>
+                <div class="mt-2 mt-sm-0 d-flex align-items-center gap-3">
+                    <span class="text-muted small">Dhaka, Bangladesh</span>
+                    <a asp-controller="Account" asp-action="Login" class="text-muted text-decoration-none small" style="opacity: 0.6;" title="Admin & Staff Login">
+                        <i class="bi bi-lock me-1"></i>Staff
+                    </a>
                 </div>
             </div>
         </div>

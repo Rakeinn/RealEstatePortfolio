@@ -1,151 +1,151 @@
-﻿@model RealEstatePortfolio.Models.Entities.Building
-
-@{
-    ViewData["Title"] = $"Manage Gallery - {Model.Name}";
-    Layout = "_AdminLayout";
-}
-
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-        <h4 class="fw-bold mb-1">Gallery Manager: @Model.Name</h4>
-        <p class="text-muted small mb-0">Drag and drop images to reorder them visually in the public Swiper carousel.</p>
-    </div>
-    <div class="d-flex gap-2">
-        <a asp-action="EditProject" asp-route-id="@Model.Id" class="btn btn-outline-secondary rounded-pill px-3">
-            <i class="bi bi-arrow-left me-1"></i> Back to Project Details
-        </a>
-    </div>
-</div>
-
-<div class="row g-4">
-    <!-- Image Reordering Grid (SortableJS) -->
-    <div class="col-lg-8">
-        <div class="glass-card p-4">
-            <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
-                <h5 class="fw-bold mb-0"><i class="bi bi-arrows-move me-2 text-primary"></i>Visual Drag & Drop Reorder</h5>
-                <span id="saveStatusBadge" class="badge bg-success bg-opacity-25 text-success d-none">
-                    <i class="bi bi-check2 me-1"></i> Order Saved
-                </span>
-            </div>
-            
-            <p class="text-muted small mb-4">
-                Grab any photo card and drag it to a new position. The DisplayOrder will automatically sync via AJAX.
-            </p>
-
-            <div id="sortableGallery" class="row g-3">
-                @foreach (var img in Model.Images.OrderBy(i => i.DisplayOrder))
-                {
-                    <div class="col-sm-6 col-md-4 sortable-item" data-id="@img.Id">
-                        <div class="glass-card p-2 border position-relative h-100 d-flex flex-column">
-                            <div class="position-relative overflow-hidden rounded-3 mb-2" style="height: 140px;">
-                                <img src="@img.ImagePath" alt="@img.Caption" class="w-100 h-100 object-fit-cover" />
-                                <div class="position-absolute top-0 start-0 m-2">
-                                    <span class="badge @(img.IsPrimary ? "bg-primary" : "bg-dark bg-opacity-75")">
-                                        @(img.IsPrimary ? "Primary Cover" : $"Order #{img.DisplayOrder}")
-                                    </span>
-                                </div>
-                                <div class="position-absolute top-0 end-0 m-2">
-                                    <span class="badge bg-dark bg-opacity-50 text-white p-1 cursor-grab" title="Drag to reorder">
-                                        <i class="bi bi-grip-vertical fs-5"></i>
-                                    </span>
-                                </div>
-                            </div>
-
-                            <p class="text-muted small mb-2 text-truncate px-1">@(img.Caption ?? "Gallery Image")</p>
-
-                            <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
-                                @if (!img.IsPrimary)
-                                {
-                                    <form asp-action="SetPrimaryImage" method="post" class="d-inline">
-                                        @Html.AntiForgeryToken()
-                                        <input type="hidden" name="imageId" value="@img.Id" />
-                                        <input type="hidden" name="buildingId" value="@Model.Id" />
-                                        <button type="submit" class="btn btn-outline-primary btn-sm rounded-pill py-0 px-2" style="font-size: 11px;">
-                                            Set Primary
-                                        </button>
-                                    </form>
-                                }
-                                else
-                                {
-                                    <span class="text-success small fw-semibold" style="font-size: 11px;"><i class="bi bi-star-fill me-1"></i>Primary</span>
-                                }
-
-                                <form asp-action="DeleteImage" method="post" class="d-inline" onsubmit="return confirm('Delete this image?');">
-                                    @Html.AntiForgeryToken()
-                                    <input type="hidden" name="imageId" value="@img.Id" />
-                                    <input type="hidden" name="buildingId" value="@Model.Id" />
-                                    <button type="submit" class="btn btn-outline-danger btn-sm rounded-circle p-1" title="Delete Image">
-                                        <i class="bi bi-trash"></i>
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        </div>
-    </div>
-
-    <!-- Upload New Gallery Images -->
-    <div class="col-lg-4">
-        <div class="glass-card p-4">
-            <h5 class="fw-bold mb-3 border-bottom pb-2"><i class="bi bi-cloud-arrow-up-fill text-primary me-2"></i>Upload Photos</h5>
-            <p class="text-muted small mb-3">Add more architectural renderings or interior photos to this project's gallery.</p>
-
-            <form asp-action="UploadGalleryImages" method="post" enctype="multipart/form-data">
-                @Html.AntiForgeryToken()
-                <input type="hidden" name="buildingId" value="@Model.Id" />
-
-                <div class="mb-3">
-                    <label class="form-label small fw-semibold">Select Images (PNG, JPG, WEBP, SVG)</label>
-                    <input type="file" name="images" multiple accept="image/*" class="form-control rounded-3" required />
-                </div>
-
-                <button type="submit" class="btn btn-primary rounded-pill w-100 py-2 fw-semibold">
-                    <i class="bi bi-upload me-2"></i> Upload to Gallery
-                </button>
-            </form>
-        </div>
-    </div>
-</div>
-
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const gallery = document.getElementById('sortableGallery');
-            const saveBadge = document.getElementById('saveStatusBadge');
-
-            new Sortable(gallery, {
-                animation: 200,
-                ghostClass: 'sortable-ghost',
-                dragClass: 'sortable-drag',
-                handle: '.cursor-grab',
-                onEnd: async function () {
-                    const items = gallery.querySelectorAll('.sortable-item');
-                    const orderData = [];
-
-                    items.forEach((item, index) => {
-                        const id = parseInt(item.getAttribute('data-id'));
-                        orderData.push({ id: id, displayOrder: index + 1 });
-                    });
-
-                    try {
-                        const res = await fetch('/Admin/UpdateImageOrder', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(orderData)
-                        });
-                        const result = await res.json();
-
-                        if (result.success) {
-                            saveBadge.classList.remove('d-none');
-                            setTimeout(() => { saveBadge.classList.add('d-none'); }, 3000);
-                        }
-                    } catch (err) {
-                        console.error('Failed to sync image sort order', err);
-                    }
-                }
-            });
-        });
-    </script>
-}
+﻿@model RealEstatePortfolio.Models.Entities.Building
+
+@{
+    ViewData["Title"] = $"Manage Gallery - {Model.Name}";
+    Layout = "_AdminLayout";
+}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h4 class="fw-bold mb-1">Gallery Manager: @Model.Name</h4>
+        <p class="text-muted small mb-0">Drag and drop images to reorder them visually in the public Swiper carousel.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a asp-action="EditProject" asp-route-id="@Model.Id" class="btn btn-outline-secondary rounded-pill px-3">
+            <i class="bi bi-arrow-left me-1"></i> Back to Project Details
+        </a>
+    </div>
+</div>
+
+<div class="row g-4">
+    <!-- Image Reordering Grid (SortableJS) -->
+    <div class="col-lg-8">
+        <div class="glass-card p-4">
+            <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+                <h5 class="fw-bold mb-0"><i class="bi bi-arrows-move me-2 text-primary"></i>Visual Drag & Drop Reorder</h5>
+                <span id="saveStatusBadge" class="badge bg-success bg-opacity-25 text-success d-none">
+                    <i class="bi bi-check2 me-1"></i> Order Saved
+                </span>
+            </div>
+            
+            <p class="text-muted small mb-4">
+                Grab any photo card and drag it to a new position. The DisplayOrder will automatically sync via AJAX.
+            </p>
+
+            <div id="sortableGallery" class="row g-3">
+                @foreach (var img in Model.Images.OrderBy(i => i.DisplayOrder))
+                {
+                    <div class="col-sm-6 col-md-4 sortable-item" data-id="@img.Id">
+                        <div class="glass-card p-2 border position-relative h-100 d-flex flex-column">
+                            <div class="position-relative overflow-hidden rounded-3 mb-2" style="height: 140px; background: #0c1424;">
+                                <img src="@img.ImagePath" alt="@img.Caption" class="w-100 h-100 object-fit-contain" />
+                                <div class="position-absolute top-0 start-0 m-2">
+                                    <span class="badge @(img.IsPrimary ? "bg-primary" : "bg-dark bg-opacity-75")">
+                                        @(img.IsPrimary ? "Primary Cover" : $"Order #{img.DisplayOrder}")
+                                    </span>
+                                </div>
+                                <div class="position-absolute top-0 end-0 m-2">
+                                    <span class="badge bg-dark bg-opacity-50 text-white p-1 cursor-grab" title="Drag to reorder">
+                                        <i class="bi bi-grip-vertical fs-5"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                            <p class="text-muted small mb-2 text-truncate px-1">@(img.Caption ?? "Gallery Image")</p>
+
+                            <div class="mt-auto pt-2 border-top d-flex justify-content-between align-items-center">
+                                @if (!img.IsPrimary)
+                                {
+                                    <form asp-action="SetPrimaryImage" method="post" class="d-inline">
+                                        @Html.AntiForgeryToken()
+                                        <input type="hidden" name="imageId" value="@img.Id" />
+                                        <input type="hidden" name="buildingId" value="@Model.Id" />
+                                        <button type="submit" class="btn btn-outline-primary btn-sm rounded-pill py-0 px-2" style="font-size: 11px;">
+                                            Set Primary
+                                        </button>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <span class="text-success small fw-semibold" style="font-size: 11px;"><i class="bi bi-star-fill me-1"></i>Primary</span>
+                                }
+
+                                <form asp-action="DeleteImage" method="post" class="d-inline" onsubmit="return confirm('Delete this image?');">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="imageId" value="@img.Id" />
+                                    <input type="hidden" name="buildingId" value="@Model.Id" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm rounded-circle p-1" title="Delete Image">
+                                        <i class="bi bi-trash"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload New Gallery Images -->
+    <div class="col-lg-4">
+        <div class="glass-card p-4">
+            <h5 class="fw-bold mb-3 border-bottom pb-2"><i class="bi bi-cloud-arrow-up-fill text-primary me-2"></i>Upload Photos</h5>
+            <p class="text-muted small mb-3">Add more architectural renderings or interior photos to this project's gallery.</p>
+
+            <form asp-action="UploadGalleryImages" method="post" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <input type="hidden" name="buildingId" value="@Model.Id" />
+
+                <div class="mb-3">
+                    <label class="form-label small fw-semibold">Select Images (PNG, JPG, WEBP, SVG)</label>
+                    <input type="file" name="images" multiple accept="image/*" class="form-control rounded-3" required />
+                </div>
+
+                <button type="submit" class="btn btn-primary rounded-pill w-100 py-2 fw-semibold">
+                    <i class="bi bi-upload me-2"></i> Upload to Gallery
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const gallery = document.getElementById('sortableGallery');
+            const saveBadge = document.getElementById('saveStatusBadge');
+
+            new Sortable(gallery, {
+                animation: 200,
+                ghostClass: 'sortable-ghost',
+                dragClass: 'sortable-drag',
+                handle: '.cursor-grab',
+                onEnd: async function () {
+                    const items = gallery.querySelectorAll('.sortable-item');
+                    const orderData = [];
+
+                    items.forEach((item, index) => {
+                        const id = parseInt(item.getAttribute('data-id'));
+                        orderData.push({ id: id, displayOrder: index + 1 });
+                    });
+
+                    try {
+                        const res = await fetch('/Admin/UpdateImageOrder', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(orderData)
+                        });
+                        const result = await res.json();
+
+                        if (result.success) {
+                            saveBadge.classList.remove('d-none');
+                            setTimeout(() => { saveBadge.classList.add('d-none'); }, 3000);
+                        }
+                    } catch (err) {
+                        console.error('Failed to sync image sort order', err);
+                    }
+                }
+            });
+        });
+    </script>
+}

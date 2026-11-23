@@ -238,22 +238,25 @@
                 @foreach (var p in Model)
                 {
                     <div class="col-md-6 col-lg-4" data-aos="fade-up">
-                        <div class="card h-100 glass-card glass-card-hover border-0 overflow-hidden d-flex flex-column">
-                            <div class="position-relative overflow-hidden" style="height: 240px;">
-                                <img src="@(p.PrimaryImage?.ImagePath ?? "/images/properties/lumina-1.svg")" alt="@p.Name" class="w-100 h-100 object-fit-cover" />
+                        <div class="card h-100 glass-card glass-card-hover border-0 overflow-hidden d-flex flex-column project-card-modern">
+                            <div class="project-card-image-wrap position-relative overflow-hidden">
+                                <img src="@(p.PrimaryImage?.ImagePath ?? "/images/properties/lumina-1.svg")" alt="@p.Name" class="w-100 h-100 project-card-img" />
                                 <div class="position-absolute top-0 start-0 m-3">
                                     <span class="badge badge-status-@(p.Status.ToString().ToLower()) shadow-sm">@p.Status</span>
                                 </div>
-                                @if (p.CompletionYear.HasValue)
-                                {
-                                    <div class="position-absolute top-0 end-0 m-3">
-                                        <span class="badge bg-dark bg-opacity-75 text-white shadow-sm">Est. @p.CompletionYear</span>
-                                    </div>
-                                }
+                                <div class="position-absolute top-0 end-0 m-3">
+                                    <span class="badge bg-success bg-opacity-90 text-white shadow-sm fw-semibold">@(p.PropertyType ?? "Residential")</span>
+                                </div>
                             </div>
 
                             <div class="card-body p-4 d-flex flex-column">
-                                <span class="text-success small fw-bold text-uppercase tracking-wider mb-1">Recent Living Ltd.</span>
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <span class="text-success small fw-bold text-uppercase tracking-wider">Recent Living Ltd.</span>
+                                    @if (p.CompletionYear.HasValue)
+                                    {
+                                        <span class="text-muted small"><i class="bi bi-calendar3 me-1"></i>Est. @p.CompletionYear</span>
+                                    }
+                                </div>
                                 <h5 class="card-title fw-bold font-serif mb-2 fs-5">
                                     <a asp-controller="Projects" asp-action="Details" asp-route-slug="@p.Slug" class="text-decoration-none text-body stretched-link">
                                         @p.Name
@@ -272,12 +275,11 @@
                                 }
 
                                 <div class="mt-auto pt-3 border-top d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <span class="text-muted small d-block" style="font-size: 11px; text-transform: uppercase;">From</span>
-                                        <span class="fw-bold text-success fs-5 font-serif">@(p.PriceStartingFrom.HasValue ? $"BDT {p.PriceStartingFrom:N0}" : "Price on Request")</span>
-                                    </div>
+                                    <span class="text-success fw-semibold small d-inline-flex align-items-center gap-1">
+                                        View Details
+                                    </span>
                                     <span class="btn btn-outline-success btn-sm rounded-circle p-2">
-                                        <i class="bi bi-chevron-right"></i>
+                                        <i class="bi bi-arrow-right"></i>
                                     </span>
                                 </div>
                             </div>

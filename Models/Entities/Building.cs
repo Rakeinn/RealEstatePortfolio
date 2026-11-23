@@ -1,4 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RealEstatePortfolio.Models.Entities
@@ -36,7 +36,7 @@ namespace RealEstatePortfolio.Models.Entities
         public string? SisterConcern { get; set; } = "Recent Properties Ltd"; // Recent Properties Ltd, Recent Living Ltd, Recent Living Interior
 
         // Additional helpful fields for rich portfolio rendering
-        public string? PropertyType { get; set; } = "Residential"; // Residential, Commercial, Mixed-Use, Villa
+        public string? PropertyType { get; set; } = "Residential"; // Residential, Commercial, Mix
         public decimal? PriceStartingFrom { get; set; }
         public int? TotalUnits { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;

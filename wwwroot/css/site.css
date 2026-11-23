@@ -313,7 +313,7 @@ h1, h2, h3, .font-serif, .editorial-heading {
   }
 }
 
-/* Media Status & Control Toolbar */
+/* Media Status & Sound Control Toolbar */
 .hero-media-toolbar {
   position: absolute;
   bottom: 24px;
@@ -329,6 +329,37 @@ h1, h2, h3, .font-serif, .editorial-heading {
     bottom: 14px;
     right: 14px;
   }
+}
+
+.hero-audio-pill {
+  padding: 0.5rem 1.15rem;
+  border-radius: 50rem;
+  background: rgba(15, 23, 42, 0.7);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+  user-select: none;
+}
+
+.hero-audio-pill:hover {
+  background: rgba(2, 132, 199, 0.85);
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #ffffff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(2, 132, 199, 0.4);
+}
+
+.hero-audio-pill:active {
+  transform: translateY(0);
 }
 
 .hero-toolbar-pill {
@@ -352,27 +383,6 @@ h1, h2, h3, .font-serif, .editorial-heading {
 .hero-toolbar-pill:hover {
   background: rgba(2, 132, 199, 0.8);
   border-color: rgba(255, 255, 255, 0.4);
-  color: #ffffff;
-}
-
-.hero-toolbar-icon-btn {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: rgba(15, 23, 42, 0.65);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.hero-toolbar-icon-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
   color: #ffffff;
 }
 
@@ -523,4 +533,127 @@ h1, h2, h3, .font-serif, .editorial-heading {
 
 .sortable-drag {
   cursor: grabbing;
+}
+
+
+/* ==========================================================================
+   Project Cards & Aspect Preservation (No Awkward Crops)
+   ========================================================================== */
+.project-card-modern {
+  border-radius: var(--card-radius);
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease, border-color 0.35s ease;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+}
+
+.project-card-modern:hover {
+  transform: translateY(-6px);
+  border-color: rgba(2, 132, 199, 0.35);
+  box-shadow: 0 18px 36px -10px rgba(0, 0, 0, 0.3);
+}
+
+.project-card-image-wrap {
+  width: 100%;
+  height: 250px;
+  background-color: #070d18;
+  position: relative;
+  overflow: hidden;
+}
+
+.project-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 20%;
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card-modern:hover .project-card-img {
+  transform: scale(1.05);
+}
+
+/* ==========================================================================
+   Project Details Gallery Slide (Uncropped Architectural Framing)
+   ========================================================================== */
+.gallery-slide-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #060a12;
+  overflow: hidden;
+}
+
+.gallery-slide-backdrop {
+  position: absolute;
+  inset: -25px;
+  background-size: cover;
+  background-position: center;
+  filter: blur(28px) brightness(0.3);
+  opacity: 0.9;
+  transform: scale(1.15);
+  pointer-events: none;
+}
+
+.gallery-main-img {
+  position: relative;
+  z-index: 2;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  margin: auto;
+  transition: transform 0.4s ease;
+}
+
+/* ==========================================================================
+   Smooth Animations & Hover Micro-Interactions
+   ========================================================================== */
+.navbar {
+  transition: padding 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.navbar.navbar-scrolled {
+  padding-top: 0.55rem !important;
+  padding-bottom: 0.55rem !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
+  background: rgba(9, 13, 22, 0.95) !important;
+}
+
+[data-bs-theme="light"] .navbar.navbar-scrolled {
+  background: rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, background-color 0.25s ease, border-color 0.25s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 8px 24px -4px rgba(2, 132, 199, 0.45);
+}
+
+.btn-outline-primary:hover {
+  box-shadow: 0 8px 20px -4px rgba(2, 132, 199, 0.3);
+}
+
+.footer-link {
+  transition: all 0.2s ease;
+  display: inline-block;
+}
+
+.footer-link:hover {
+  color: var(--primary-accent) !important;
+  transform: translateX(4px);
 }
