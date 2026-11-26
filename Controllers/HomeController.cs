@@ -70,6 +70,7 @@ namespace RealEstatePortfolio.Controllers
 
         [HttpGet]
         [Route("recent-living")]
+        [Route("Home/Living")]
         public async Task<IActionResult> Living()
         {
             var livingProjects = await _db.Buildings

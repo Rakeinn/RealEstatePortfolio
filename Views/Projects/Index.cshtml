@@ -24,14 +24,23 @@
         <div class="glass-card p-4 mb-4 shadow-sm">
             <form id="filterForm" method="get" asp-action="Index">
                 <div class="row g-3 align-items-center">
-                    <div class="col-lg-3">
+                    <div class="col-12 col-lg-3">
                         <div class="input-group">
                             <span class="input-group-text bg-body border-end-0"><i class="bi bi-search text-muted"></i></span>
-                            <input type="text" id="filterSearch" name="SearchTerm" value="@Model.SearchTerm" class="form-control border-start-0 ps-0" placeholder="Search by name, city, feature..." />
+                            <input type="text" id="filterSearch" name="SearchTerm" value="@Model.SearchTerm" class="form-control border-start-0 ps-0" placeholder="Search by name, area, feature..." />
                         </div>
                     </div>
 
-                    <div class="col-sm-6 col-lg-3">
+                    <div class="col-6 col-md-3 col-lg-2">
+                        <select id="filterPropertyType" name="PropertyType" class="form-select">
+                            <option value="">All Categories</option>
+                            <option value="Residential" selected="@(Model.PropertyType == "Residential")">Residential</option>
+                            <option value="Commercial" selected="@(Model.PropertyType == "Commercial")">Commercial</option>
+                            <option value="Mix" selected="@(Model.PropertyType == "Mix")">Mix</option>
+                        </select>
+                    </div>
+
+                    <div class="col-6 col-md-3 col-lg-3">
                         <select id="filterSisterConcern" name="SisterConcern" class="form-select">
                             <option value="">All Sister Concerns</option>
                             @foreach (var concern in Model.AvailableSisterConcerns)
@@ -41,7 +50,7 @@
                         </select>
                     </div>
 
-                    <div class="col-sm-6 col-lg-2">
+                    <div class="col-6 col-md-2 col-lg-2">
                         <select id="filterStatus" name="Status" class="form-select">
                             <option value="">All Statuses</option>
                             <option value="Upcoming" selected="@(Model.Status == RealEstatePortfolio.Models.Entities.ProjectStatus.Upcoming)">Upcoming</option>
@@ -50,17 +59,7 @@
                         </select>
                     </div>
 
-                    <div class="col-sm-6 col-lg-2">
-                        <select id="filterYear" name="CompletionYear" class="form-select">
-                            <option value="">All Years</option>
-                            @foreach (var yr in Model.AvailableYears)
-                            {
-                                <option value="@yr" selected="@(Model.CompletionYear == yr)">@yr</option>
-                            }
-                        </select>
-                    </div>
-
-                    <div class="col-sm-6 col-lg-2">
+                    <div class="col-6 col-md-4 col-lg-2">
                         <select id="filterSort" name="SortBy" class="form-select">
                             <option value="newest" selected="@(Model.SortBy == "newest")">Newest First</option>
                             <option value="name_asc" selected="@(Model.SortBy == "name_asc")">Name (A-Z)</option>
@@ -180,17 +179,17 @@
 
             let debounceTimer;
             const filterSearch = document.getElementById('filterSearch');
+            const filterPropertyType = document.getElementById('filterPropertyType');
             const filterSisterConcern = document.getElementById('filterSisterConcern');
             const filterStatus = document.getElementById('filterStatus');
-            const filterYear = document.getElementById('filterYear');
             const filterSort = document.getElementById('filterSort');
             const skeletonContainer = document.getElementById('skeletonContainer');
 
             async function triggerFilter() {
                 const search = filterSearch.value;
+                const propType = filterPropertyType.value;
                 const concern = filterSisterConcern.value;
                 const status = filterStatus.value;
-                const year = filterYear.value;
                 const sort = filterSort.value;
 
                 projectsGrid.classList.add('d-none');
@@ -198,9 +197,9 @@
 
                 const params = new URLSearchParams();
                 if (search) params.append('searchTerm', search);
+                if (propType) params.append('propertyType', propType);
                 if (concern) params.append('sisterConcern', concern);
                 if (status) params.append('status', status);
-                if (year) params.append('completionYear', year);
                 if (sort) params.append('sortBy', sort);
 
                 try {
@@ -278,9 +277,9 @@
                 debounceTimer = setTimeout(triggerFilter, 300);
             });
 
+            filterPropertyType.addEventListener('change', triggerFilter);
             filterSisterConcern.addEventListener('change', triggerFilter);
             filterStatus.addEventListener('change', triggerFilter);
-            filterYear.addEventListener('change', triggerFilter);
             filterSort.addEventListener('change', triggerFilter);
 
             document.querySelectorAll('.concern-chip').forEach(chip => {
@@ -299,9 +298,9 @@
 
             document.getElementById('resetFiltersBtn').addEventListener('click', () => {
                 filterSearch.value = '';
+                filterPropertyType.value = '';
                 filterSisterConcern.value = '';
                 filterStatus.value = '';
-                filterYear.value = '';
                 filterSort.value = 'newest';
                 document.querySelectorAll('.concern-chip').forEach(c => {
                     c.classList.remove('active');

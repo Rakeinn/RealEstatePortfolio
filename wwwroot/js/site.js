@@ -79,10 +79,14 @@
           phoneNumber: form.querySelector('[name="PhoneNumber"]')?.value || "",
           subject: form.querySelector('[name="Subject"]').value,
           message: form.querySelector('[name="Message"]').value,
-          preferredProjectSlug: form.querySelector('[name="PreferredProjectSlug"]')?.value || ""
+          preferredProjectSlug: form.querySelector('[name="PreferredProjectSlug"]')?.value || "",
+          targetedConcern: form.querySelector('[name="TargetedConcern"]')?.value || "Recent Group Corporate"
         };
 
         if (submitBtn) {
+          if (!submitBtn.dataset.originalHtml) {
+            submitBtn.dataset.originalHtml = submitBtn.innerHTML;
+          }
           submitBtn.disabled = true;
           submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Submitting...';
         }
@@ -94,6 +98,15 @@
             body: JSON.stringify(payload)
           });
           const result = await response.json();
+
+          if (!response.ok || result.success === false) {
+            if (alertBox) {
+              alertBox.className = "alert alert-danger mt-3";
+              alertBox.textContent = result.message || "Please check all required fields and try again.";
+              alertBox.classList.remove("d-none");
+            }
+            return;
+          }
 
           if (alertBox) {
             alertBox.className = "alert alert-success mt-3";
@@ -110,7 +123,7 @@
         } finally {
           if (submitBtn) {
             submitBtn.disabled = false;
-            submitBtn.innerHTML = '<i class="bi bi-send-fill me-2"></i>Send Inquiry';
+            submitBtn.innerHTML = submitBtn.dataset.originalHtml || '<i class="bi bi-send-fill me-2"></i>Send Inquiry';
           }
         }
       });

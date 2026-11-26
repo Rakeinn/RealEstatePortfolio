@@ -248,6 +248,13 @@ h1, h2, h3, .font-serif, .editorial-heading {
   z-index: 3;
 }
 
+@media (min-width: 768px) {
+  .hero-content-container {
+    padding-left: 5rem;
+    padding-right: 5rem;
+  }
+}
+
 .text-shadow-lg {
   text-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 1px 3px rgba(0, 0, 0, 0.8);
 }
@@ -300,16 +307,32 @@ h1, h2, h3, .font-serif, .editorial-heading {
 }
 
 @media (max-width: 767.98px) {
+  .hero-media-banner {
+    min-height: 540px;
+    height: auto;
+    padding-top: 2rem;
+    padding-bottom: 4.5rem;
+  }
+  .hero-content-container h1 {
+    font-size: clamp(1.9rem, 7vw, 2.6rem);
+  }
   .hero-carousel-nav {
+    top: auto;
+    bottom: 14px;
+    transform: none;
     width: 42px;
     height: 42px;
     font-size: 1rem;
   }
+  .hero-carousel-nav:hover {
+    transform: scale(1.06);
+  }
   .hero-carousel-prev {
-    left: 12px;
+    left: 14px;
   }
   .hero-carousel-next {
-    right: 12px;
+    left: 64px;
+    right: auto;
   }
 }
 
@@ -587,26 +610,36 @@ h1, h2, h3, .font-serif, .editorial-heading {
 .project-card-image-wrap {
   width: 100%;
   height: 250px;
-  background-color: #070d18;
+  background: linear-gradient(145deg, #0b1322 0%, #162238 100%);
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .project-card-img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center 20%;
+  object-fit: contain;
+  object-position: center;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .project-card-modern:hover .project-card-img {
-  transform: scale(1.05);
+  transform: scale(1.04);
 }
 
 /* ==========================================================================
    Project Details Gallery Slide (Uncropped Architectural Framing)
    ========================================================================== */
+.project-details-swiper {
+  height: clamp(260px, 56vh, 520px);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  background-color: #060a12;
+}
+
 .gallery-slide-container {
   width: 100%;
   height: 100%;
@@ -629,7 +662,8 @@ h1, h2, h3, .font-serif, .editorial-heading {
   pointer-events: none;
 }
 
-.gallery-main-img {
+.gallery-main-img,
+.gallery-slide-img {
   position: relative;
   z-index: 2;
   max-width: 100%;
@@ -651,8 +685,8 @@ h1, h2, h3, .font-serif, .editorial-heading {
 .navbar.navbar-scrolled {
   padding-top: 0.55rem !important;
   padding-bottom: 0.55rem !important;
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.45);
-  background: rgba(9, 13, 22, 0.95) !important;
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.18);
+  background: var(--bg-nav) !important;
 }
 
 [data-bs-theme="light"] .navbar.navbar-scrolled {

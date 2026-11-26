@@ -46,16 +46,16 @@
         </div>
 
         <!-- Swiper.js Gallery & Synchronized Thumbs -->
-        <div class="glass-card p-3 shadow-lg mb-5">
-            <div class="swiper swiper-details-main" style="height: 520px; border-radius: 0.75rem; overflow: hidden;">
+        <div class="glass-card p-2 p-sm-3 shadow-lg mb-5">
+            <div class="swiper swiper-details-main project-details-swiper">
                 <div class="swiper-wrapper">
                     @foreach (var img in b.Images.OrderBy(i => i.DisplayOrder))
                     {
-                        <div class="swiper-slide position-relative">
-                            <img src="@img.ImagePath" alt="@(img.Caption ?? b.Name)" class="w-100 h-100 object-fit-cover" />
+                        <div class="swiper-slide position-relative gallery-slide-container">
+                            <img src="@img.ImagePath" alt="@(img.Caption ?? b.Name)" class="gallery-slide-img" />
                             @if (!string.IsNullOrWhiteSpace(img.Caption))
                             {
-                                <div class="position-absolute bottom-0 start-0 end-0 p-3 bg-dark bg-opacity-75 text-white small">
+                                <div class="position-absolute bottom-0 start-0 end-0 p-3 bg-dark bg-opacity-75 text-white small backdrop-blur">
                                     <i class="bi bi-camera me-1 text-primary"></i>@img.Caption
                                 </div>
                             }
@@ -301,7 +301,7 @@
 
                             <div class="mb-3">
                                 <label class="form-label small fw-semibold">Phone Number</label>
-                                <input type="tel" name="PhoneNumber" class="form-control rounded-3 py-2" placeholder="+1 (555) 000-0000" />
+                                <input type="tel" name="PhoneNumber" class="form-control rounded-3 py-2" placeholder="+880 1711 000000" />
                             </div>
 
                             <div class="mb-3">
@@ -323,12 +323,12 @@
         @if (Model.SimilarProjects.Any())
         {
             <div class="mt-5 pt-5 border-top" data-aos="fade-up">
-                <div class="d-flex justify-content-between align-items-end mb-4">
+                <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-3 mb-4">
                     <div>
                         <span class="badge-editorial mb-2">Similar Portfolio</span>
                         <h3 class="fw-bold mb-0 font-serif">Complementary Recent Group Works</h3>
                     </div>
-                    <a asp-action="Index" class="btn btn-outline-primary rounded-pill px-4">Browse All Projects &rarr;</a>
+                    <a asp-action="Index" class="btn btn-outline-primary rounded-pill px-4 align-self-start align-self-sm-auto">Browse All Projects &rarr;</a>
                 </div>
 
                 <div class="row g-4">
