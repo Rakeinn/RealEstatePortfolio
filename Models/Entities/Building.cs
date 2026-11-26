@@ -41,6 +41,29 @@ namespace RealEstatePortfolio.Models.Entities
         public int? TotalUnits { get; set; }
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
+        // Detailed Property Highlights & Apartment Specifications
+        [StringLength(100)]
+        public string? HandoverDate { get; set; }
+
+        [StringLength(100)]
+        public string? Facing { get; set; }
+
+        [StringLength(100)]
+        public string? Storied { get; set; }
+
+        [StringLength(200)]
+        public string? ApartmentSize { get; set; }
+
+        [StringLength(100)]
+        public string? LandSize { get; set; }
+
+        public string? ApartmentContains { get; set; }
+
+        // Neighborhood Connectivity (newline-separated)
+        public string? NeighborhoodSchools { get; set; }
+        public string? NeighborhoodHospitals { get; set; }
+        public string? NeighborhoodTransit { get; set; }
+
         public virtual ICollection<BuildingImage> Images { get; set; } = new List<BuildingImage>();
         public virtual ICollection<Review> Reviews { get; set; } = new List<Review>();
 
@@ -51,5 +74,23 @@ namespace RealEstatePortfolio.Models.Entities
         public List<string> FeatureList => string.IsNullOrWhiteSpace(StructuralFeatures) 
             ? new List<string>() 
             : StructuralFeatures.Split(new[] { ',', ';', '|' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
+
+        [NotMapped]
+        public List<string> ApartmentContainsList => string.IsNullOrWhiteSpace(ApartmentContains)
+            ? new List<string>()
+            : ApartmentContains.Split(new[] { ',', ';', '|', '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).ToList();
+
+        [NotMapped]
+        public List<string> NeighborhoodSchoolsList => SplitLines(NeighborhoodSchools);
+
+        [NotMapped]
+        public List<string> NeighborhoodHospitalsList => SplitLines(NeighborhoodHospitals);
+
+        [NotMapped]
+        public List<string> NeighborhoodTransitList => SplitLines(NeighborhoodTransit);
+
+        private static List<string> SplitLines(string? value) => string.IsNullOrWhiteSpace(value)
+            ? new List<string>()
+            : value.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).Select(s => s.Trim()).Where(s => s.Length > 0).ToList();
     }
 }

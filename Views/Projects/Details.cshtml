@@ -80,7 +80,7 @@
         </div>
 
         <div class="row g-5">
-            <!-- Left Column: Specs, Description, Features, Map -->
+            <!-- Left Column: Specs, Highlights, Apartment Contains, Description, Features, Neighborhood -->
             <div class="col-lg-8">
                 <!-- Specs Bar -->
                 <div class="glass-card p-4 mb-4">
@@ -92,33 +92,98 @@
                         </div>
                         <div class="col-6 col-sm-3">
                             <span class="text-muted small d-block">Status</span>
-                            <strong class="text-body">@b.Status</strong>
+                            <strong class="text-body">@(!string.IsNullOrWhiteSpace(b.HandoverDate) ? b.HandoverDate : b.Status.ToString())</strong>
                         </div>
                         <div class="col-6 col-sm-3">
-                            <span class="text-muted small d-block">Completion</span>
-                            <strong class="text-body">@(b.CompletionYear.HasValue ? b.CompletionYear.ToString() : "Ongoing")</strong>
+                            <span class="text-muted small d-block">Category</span>
+                            <strong class="text-body">@(b.PropertyType ?? "Residential")</strong>
                         </div>
                         <div class="col-6 col-sm-3">
-                            <span class="text-muted small d-block">Total Residences</span>
-                            <strong class="text-body">@(b.TotalUnits.HasValue ? $"{b.TotalUnits} Units" : "Custom")</strong>
+                            <span class="text-muted small d-block">@(b.TotalUnits.HasValue ? "Total Units" : "Completion")</span>
+                            <strong class="text-body">@(b.TotalUnits.HasValue ? $"{b.TotalUnits} Units" : (b.CompletionYear.HasValue ? b.CompletionYear.ToString() : "Ongoing"))</strong>
                         </div>
                     </div>
                 </div>
 
+                <!-- Property Highlights (when provided) -->
+                @if (!string.IsNullOrWhiteSpace(b.Facing) || !string.IsNullOrWhiteSpace(b.Storied) || !string.IsNullOrWhiteSpace(b.ApartmentSize) || !string.IsNullOrWhiteSpace(b.LandSize))
+                {
+                    <div class="glass-card p-4 p-lg-5 mb-4">
+                        <h4 class="fw-bold mb-3 font-serif"><i class="bi bi-stars text-primary me-2"></i>Property Highlights</h4>
+                        <div class="row g-3">
+                            @if (!string.IsNullOrWhiteSpace(b.Facing))
+                            {
+                                <div class="col-sm-6">
+                                    <div class="p-3 rounded-3 bg-body border h-100">
+                                        <small class="text-muted d-block mb-1">Facing</small>
+                                        <strong class="text-body"><i class="bi bi-compass me-1 text-primary"></i>@b.Facing</strong>
+                                    </div>
+                                </div>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(b.Storied))
+                            {
+                                <div class="col-sm-6">
+                                    <div class="p-3 rounded-3 bg-body border h-100">
+                                        <small class="text-muted d-block mb-1">Storied</small>
+                                        <strong class="text-body"><i class="bi bi-layers me-1 text-primary"></i>@b.Storied</strong>
+                                    </div>
+                                </div>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(b.ApartmentSize))
+                            {
+                                <div class="col-sm-6">
+                                    <div class="p-3 rounded-3 bg-body border h-100">
+                                        <small class="text-muted d-block mb-1">Apartment Size</small>
+                                        <strong class="text-body"><i class="bi bi-aspect-ratio me-1 text-primary"></i>@b.ApartmentSize</strong>
+                                    </div>
+                                </div>
+                            }
+                            @if (!string.IsNullOrWhiteSpace(b.LandSize))
+                            {
+                                <div class="col-sm-6">
+                                    <div class="p-3 rounded-3 bg-body border h-100">
+                                        <small class="text-muted d-block mb-1">Land Size</small>
+                                        <strong class="text-body"><i class="bi bi-rulers me-1 text-primary"></i>@b.LandSize</strong>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Apartment Contains -->
+                @if (b.ApartmentContainsList.Any())
+                {
+                    <div class="glass-card p-4 p-lg-5 mb-4">
+                        <h4 class="fw-bold mb-3 font-serif"><i class="bi bi-door-open text-primary me-2"></i>Apartment Contains</h4>
+                        <div class="row g-3">
+                            @foreach (var item in b.ApartmentContainsList)
+                            {
+                                <div class="col-md-6">
+                                    <div class="d-flex align-items-center gap-3 p-3 rounded-3 bg-body border">
+                                        <i class="bi bi-check2-circle text-success fs-5"></i>
+                                        <span class="fw-medium">@item</span>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
                 <!-- Rich Text Description -->
                 <div class="glass-card p-4 p-lg-5 mb-4">
-                    <h4 class="fw-bold mb-4 font-serif">Design Narrative & Features</h4>
+                    <h4 class="fw-bold mb-4 font-serif">Overview &amp; Design Narrative</h4>
                     <div class="text-muted lh-lg">
                         @Html.Raw(b.LongDescription)
                     </div>
                 </div>
 
-                <!-- Structural Features -->
+                <!-- Common Features & Amenities -->
                 @if (b.FeatureList.Any())
                 {
                     <div class="glass-card p-4 p-lg-5 mb-4">
-                        <h4 class="fw-bold mb-3 font-serif"><i class="bi bi-layers-half text-primary me-2"></i>Structural & Sustainable Engineering</h4>
-                        <p class="text-muted small mb-4">Engineered to exceed international seismic, acoustic, and thermal envelope standards.</p>
+                        <h4 class="fw-bold mb-3 font-serif"><i class="bi bi-layers-half text-primary me-2"></i>Common Features &amp; Amenities</h4>
+                        <p class="text-muted small mb-4">Shared building facilities and engineering amenities for residents.</p>
                         
                         <div class="row g-3">
                             @foreach (var feat in b.FeatureList)
@@ -128,6 +193,52 @@
                                         <i class="bi bi-shield-check text-primary fs-4"></i>
                                         <span class="fw-medium">@feat</span>
                                     </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                }
+
+                <!-- Neighborhood Connectivity (when provided) -->
+                @if (b.NeighborhoodSchoolsList.Any() || b.NeighborhoodHospitalsList.Any() || b.NeighborhoodTransitList.Any())
+                {
+                    <div class="glass-card p-4 p-lg-5 mb-4">
+                        <h4 class="fw-bold mb-4 font-serif"><i class="bi bi-signpost-split text-primary me-2"></i>Neighborhood</h4>
+                        <div class="row g-4">
+                            @if (b.NeighborhoodSchoolsList.Any())
+                            {
+                                <div class="col-12">
+                                    <h6 class="fw-bold text-primary mb-2"><i class="bi bi-mortarboard-fill me-2"></i>School, Colleges &amp; University</h6>
+                                    <ul class="list-group list-group-flush rounded-3 border overflow-hidden">
+                                        @foreach (var s in b.NeighborhoodSchoolsList)
+                                        {
+                                            <li class="list-group-item bg-body text-body small py-2 px-3">@s</li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                            @if (b.NeighborhoodHospitalsList.Any())
+                            {
+                                <div class="col-12">
+                                    <h6 class="fw-bold text-danger mb-2"><i class="bi bi-hospital-fill me-2"></i>Hospitals</h6>
+                                    <ul class="list-group list-group-flush rounded-3 border overflow-hidden">
+                                        @foreach (var h in b.NeighborhoodHospitalsList)
+                                        {
+                                            <li class="list-group-item bg-body text-body small py-2 px-3">@h</li>
+                                        }
+                                    </ul>
+                                </div>
+                            }
+                            @if (b.NeighborhoodTransitList.Any())
+                            {
+                                <div class="col-12">
+                                    <h6 class="fw-bold text-success mb-2"><i class="bi bi-train-front-fill me-2"></i>Bus / Train Station &amp; Airport</h6>
+                                    <ul class="list-group list-group-flush rounded-3 border overflow-hidden">
+                                        @foreach (var t in b.NeighborhoodTransitList)
+                                        {
+                                            <li class="list-group-item bg-body text-body small py-2 px-3">@t</li>
+                                        }
+                                    </ul>
                                 </div>
                             }
                         </div>

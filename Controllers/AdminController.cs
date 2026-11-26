@@ -109,10 +109,11 @@ namespace RealEstatePortfolio.Controllers
             var model = new AdminProjectEditViewModel
             {
                 Status = ProjectStatus.Ongoing,
-                Latitude = 40.7128,
-                Longitude = -74.0060,
+                Latitude = 23.8103,
+                Longitude = 90.4125,
                 CompletionYear = DateTime.UtcNow.Year + 1,
-                PropertyType = "Ultra-Luxury Residential"
+                PropertyType = "Residential",
+                SisterConcern = "Recent Living Ltd"
             };
             return View(model);
         }
@@ -159,6 +160,15 @@ namespace RealEstatePortfolio.Controllers
                 PropertyType = model.PropertyType?.Trim(),
                 PriceStartingFrom = model.PriceStartingFrom,
                 TotalUnits = model.TotalUnits,
+                HandoverDate = model.HandoverDate?.Trim(),
+                Facing = model.Facing?.Trim(),
+                Storied = model.Storied?.Trim(),
+                ApartmentSize = model.ApartmentSize?.Trim(),
+                LandSize = model.LandSize?.Trim(),
+                ApartmentContains = model.ApartmentContains?.Trim(),
+                NeighborhoodSchools = model.NeighborhoodSchools?.Trim(),
+                NeighborhoodHospitals = model.NeighborhoodHospitals?.Trim(),
+                NeighborhoodTransit = model.NeighborhoodTransit?.Trim(),
                 StructuralFeatures = model.StructuralFeatures?.Trim(),
                 LongDescription = model.LongDescription,
                 BrochurePdfPath = brochurePath,
@@ -233,6 +243,15 @@ namespace RealEstatePortfolio.Controllers
                 PropertyType = building.PropertyType,
                 PriceStartingFrom = building.PriceStartingFrom,
                 TotalUnits = building.TotalUnits,
+                HandoverDate = building.HandoverDate,
+                Facing = building.Facing,
+                Storied = building.Storied,
+                ApartmentSize = building.ApartmentSize,
+                LandSize = building.LandSize,
+                ApartmentContains = building.ApartmentContains,
+                NeighborhoodSchools = building.NeighborhoodSchools,
+                NeighborhoodHospitals = building.NeighborhoodHospitals,
+                NeighborhoodTransit = building.NeighborhoodTransit,
                 StructuralFeatures = building.StructuralFeatures,
                 LongDescription = building.LongDescription,
                 BrochurePdfPath = building.BrochurePdfPath,
@@ -287,6 +306,15 @@ namespace RealEstatePortfolio.Controllers
             building.PropertyType = model.PropertyType?.Trim();
             building.PriceStartingFrom = model.PriceStartingFrom;
             building.TotalUnits = model.TotalUnits;
+            building.HandoverDate = model.HandoverDate?.Trim();
+            building.Facing = model.Facing?.Trim();
+            building.Storied = model.Storied?.Trim();
+            building.ApartmentSize = model.ApartmentSize?.Trim();
+            building.LandSize = model.LandSize?.Trim();
+            building.ApartmentContains = model.ApartmentContains?.Trim();
+            building.NeighborhoodSchools = model.NeighborhoodSchools?.Trim();
+            building.NeighborhoodHospitals = model.NeighborhoodHospitals?.Trim();
+            building.NeighborhoodTransit = model.NeighborhoodTransit?.Trim();
             building.StructuralFeatures = model.StructuralFeatures?.Trim();
             building.LongDescription = model.LongDescription;
             building.SeoTitle = model.SeoTitle?.Trim();

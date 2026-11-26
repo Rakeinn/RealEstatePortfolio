@@ -68,6 +68,38 @@ namespace RealEstatePortfolio.Models.ViewModels
         [Display(Name = "Total Units")]
         public int? TotalUnits { get; set; }
 
+        [Display(Name = "Handover Timeline")]
+        [StringLength(100)]
+        public string? HandoverDate { get; set; }
+
+        [Display(Name = "Facing")]
+        [StringLength(100)]
+        public string? Facing { get; set; }
+
+        [Display(Name = "Storied / Floors")]
+        [StringLength(100)]
+        public string? Storied { get; set; }
+
+        [Display(Name = "Apartment Size (Sq. Ft.)")]
+        [StringLength(200)]
+        public string? ApartmentSize { get; set; }
+
+        [Display(Name = "Land Size")]
+        [StringLength(100)]
+        public string? LandSize { get; set; }
+
+        [Display(Name = "Apartment Contains (comma-separated)")]
+        public string? ApartmentContains { get; set; }
+
+        [Display(Name = "Neighborhood: Schools, Colleges & Universities (one per line)")]
+        public string? NeighborhoodSchools { get; set; }
+
+        [Display(Name = "Neighborhood: Hospitals & Diagnostics (one per line)")]
+        public string? NeighborhoodHospitals { get; set; }
+
+        [Display(Name = "Neighborhood: Bus, Train & Airport Stations (one per line)")]
+        public string? NeighborhoodTransit { get; set; }
+
         public List<BuildingImage> ExistingImages { get; set; } = new List<BuildingImage>();
 
         [Display(Name = "Upload Images")]
