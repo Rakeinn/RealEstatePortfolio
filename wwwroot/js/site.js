@@ -330,5 +330,43 @@
       });
     }
 
+    // 6. Scroll Progress Bar & Floating Back-to-Top Glass Pill
+    const scrollProgressBar = document.getElementById("scrollProgressBar");
+    const backToTopBtn = document.getElementById("backToTopBtn");
+    if (scrollProgressBar || backToTopBtn) {
+      const updateScrollUI = () => {
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
+        const docHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        if (scrollProgressBar && docHeight > 0) {
+          const pct = Math.min(100, Math.max(0, (scrollTop / docHeight) * 100));
+          scrollProgressBar.style.width = `${pct}%`;
+        }
+        if (backToTopBtn) {
+          if (scrollTop > 420) {
+            backToTopBtn.classList.add("visible");
+          } else {
+            backToTopBtn.classList.remove("visible");
+          }
+        }
+      };
+      window.addEventListener("scroll", updateScrollUI, { passive: true });
+      updateScrollUI();
+
+      if (backToTopBtn) {
+        backToTopBtn.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+    }
+
+    // 7. Interactive Liquid-Glass Cursor Specular Sheen on Cards
+    document.querySelectorAll(".glass-card, .gallery-tile").forEach((card) => {
+      card.addEventListener("mousemove", (e) => {
+        const rect = card.getBoundingClientRect();
+        card.style.setProperty("--mouse-x", `${e.clientX - rect.left}px`);
+        card.style.setProperty("--mouse-y", `${e.clientY - rect.top}px`);
+      }, { passive: true });
+    });
+
   });
 })();
