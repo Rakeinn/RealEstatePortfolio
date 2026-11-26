@@ -104,9 +104,9 @@
 </section>
 
 <!-- Sister Concerns: Simple, Small & Informational (No Buttons or Functionality) -->
-<section id="sister-concerns" class="py-3 border-top border-bottom bg-body-tertiary">
+<section id="sister-concerns" class="py-4 border-bottom bg-body-tertiary">
     <div class="container">
-        <div class="d-flex justify-content-between align-items-center mb-2">
+        <div class="d-flex justify-content-between align-items-center mb-3">
             <span class="text-muted small text-uppercase tracking-wider fw-semibold" style="font-size: 11px;">Our Sister Concerns</span>
             <small class="text-muted" style="font-size: 11px;">Recent Group Subsidiaries</small>
         </div>
@@ -114,39 +114,39 @@
         <div class="row g-3">
             <!-- 1. Recent Properties Ltd -->
             <div class="col-md-4">
-                <div class="glass-card p-3 h-100 d-flex align-items-center gap-3">
-                    <span class="p-2 rounded-3 bg-body border text-primary fs-5 d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                <div class="glass-card glass-card-hover p-3 h-100 d-flex align-items-center gap-3">
+                    <span class="p-2 rounded-3 bg-body border text-primary fs-5 d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width: 42px; height: 42px;">
                         <i class="bi bi-building"></i>
                     </span>
                     <div>
                         <h6 class="fw-bold mb-0" style="font-size: 14px;">Recent Properties Ltd</h6>
-                        <small class="text-muted" style="font-size: 12px;">Civil & Commercial High-Rises</small>
+                        <small class="text-muted" style="font-size: 12px;">Civil &amp; Commercial High-Rises</small>
                     </div>
                 </div>
             </div>
 
             <!-- 2. Recent Living Ltd -->
             <div class="col-md-4">
-                <div class="glass-card p-3 h-100 d-flex align-items-center gap-3">
-                    <span class="p-2 rounded-3 bg-body border text-success fs-5 d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                <div class="glass-card glass-card-hover p-3 h-100 d-flex align-items-center gap-3">
+                    <span class="p-2 rounded-3 bg-body border text-success fs-5 d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width: 42px; height: 42px;">
                         <i class="bi bi-houses"></i>
                     </span>
                     <div>
                         <h6 class="fw-bold mb-0" style="font-size: 14px;">Recent Living Ltd.</h6>
-                        <small class="text-muted" style="font-size: 12px;">Residential Homes & Better Lifestyle</small>
+                        <small class="text-muted" style="font-size: 12px;">Residential Homes &amp; Better Lifestyle</small>
                     </div>
                 </div>
             </div>
 
             <!-- 3. Recent Living Interior -->
             <div class="col-md-4">
-                <div class="glass-card p-3 h-100 d-flex align-items-center gap-3">
-                    <span class="p-2 rounded-3 bg-body border text-warning fs-5 d-inline-flex align-items-center justify-content-center" style="width: 38px; height: 38px;">
+                <div class="glass-card glass-card-hover p-3 h-100 d-flex align-items-center gap-3">
+                    <span class="p-2 rounded-3 bg-body border text-warning fs-5 d-inline-flex align-items-center justify-content-center flex-shrink-0" style="width: 42px; height: 42px;">
                         <i class="bi bi-palette"></i>
                     </span>
                     <div>
                         <h6 class="fw-bold mb-0" style="font-size: 14px;">Recent Living Interior</h6>
-                        <small class="text-muted" style="font-size: 12px;">Turnkey Interiors & Fit-Outs</small>
+                        <small class="text-muted" style="font-size: 12px;">Turnkey Interiors &amp; Fit-Outs</small>
                     </div>
                 </div>
             </div>
@@ -155,11 +155,11 @@
 </section>
 
 <!-- Recent Projects Section -->
-<section class="py-5 bg-body-tertiary border-top" id="recent-projects">
-    <div class="container">
+<section class="py-5" id="recent-projects">
+    <div class="container py-lg-4">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5" data-aos="fade-up">
             <div>
-                <span class="badge-editorial mb-2">Portfolio Showcase</span>
+                <span class="badge-editorial d-inline-block mb-2">Portfolio Showcase</span>
                 <h2 class="display-5 fw-bold mb-2 font-serif">Recent Projects</h2>
                 <p class="text-muted mb-0">Explore our latest residential, commercial, and mix developments across Bangladesh.</p>
             </div>
@@ -174,7 +174,7 @@
             @foreach (var p in (Model.RecentProjects != null && Model.RecentProjects.Any() ? Model.RecentProjects : Model.FeaturedProjects))
             {
                 <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-duration="800">
-                    <div class="card h-100 glass-card glass-card-hover border-0 overflow-hidden d-flex flex-column project-card-modern">
+                    <div class="card h-100 glass-card glass-card-hover overflow-hidden d-flex flex-column project-card-modern">
                         <!-- Project Image Container with Aspect Preservation (No Awkward Crops) -->
                         <div class="project-card-image-wrap position-relative overflow-hidden">
                             <img src="@(p.PrimaryImage?.ImagePath ?? "/images/properties/lumina-1.svg")" alt="@p.Name" class="w-100 h-100 project-card-img" loading="lazy" />
@@ -217,7 +217,7 @@
                                 <span class="text-primary fw-semibold small d-inline-flex align-items-center gap-1">
                                     View Project Details
                                 </span>
-                                <span class="btn btn-outline-primary btn-sm rounded-circle p-2">
+                                <span class="btn btn-outline-primary btn-sm rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 36px; height: 36px; padding: 0;">
                                     <i class="bi bi-arrow-right"></i>
                                 </span>
                             </div>
@@ -230,12 +230,12 @@
 </section>
 
 <!-- Architectural Gallery & Image Grid with Animation -->
-<section id="gallery-grid" class="py-5 border-top">
+<section id="gallery-grid" class="py-5 bg-body-tertiary border-top border-bottom">
     <div class="container py-lg-4">
         <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end mb-5" data-aos="fade-up">
             <div>
-                <span class="badge-editorial mb-2">Visual Showcase</span>
-                <h2 class="display-5 fw-bold font-serif mb-2">Living Spaces & Architecture</h2>
+                <span class="badge-editorial d-inline-block mb-2">Visual Showcase</span>
+                <h2 class="display-5 fw-bold font-serif mb-2">Living Spaces &amp; Architecture</h2>
                 <p class="text-muted mb-0">Experience the quality, contemporary aesthetics, and serene environments crafted across our developments in Bangladesh.</p>
             </div>
             <div class="mt-3 mt-md-0">
@@ -246,9 +246,9 @@
             </div>
         </div>
 
-        <!-- Animated Bento / Masonry Image Grid -->
+        <!-- Balanced Animated Bento Image Grid (8 + [4 stacked], then 4 + 4 + 4) -->
         <div class="row g-4 gallery-animated-grid">
-            <!-- Item 1: Large Feature -->
+            <!-- Row 1 Left: Large Feature (480px) -->
             <div class="col-lg-8" data-aos="fade-up" data-aos-duration="750">
                 <div class="gallery-tile gallery-tile-lg position-relative overflow-hidden rounded-4 shadow-sm" data-img="/images/hero/slide-1.jpg" data-title="Grand Residential Arrival Court" data-category="Signature Architecture">
                     <img src="/images/hero/slide-1.jpg" alt="Grand Residential Arrival Court" class="gallery-tile-img w-100 h-100" loading="lazy" />
@@ -264,15 +264,50 @@
                 </div>
             </div>
 
-            <!-- Item 2 -->
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-duration="750" data-aos-delay="100">
-                <div class="gallery-tile gallery-tile-sm position-relative overflow-hidden rounded-4 shadow-sm" data-img="/images/hero/slide-2.jpg" data-title="Cascading Balconies & Sky Gardens" data-category="Eco-Architecture">
-                    <img src="/images/hero/slide-2.jpg" alt="Cascading Balconies & Sky Gardens" class="gallery-tile-img w-100 h-100" loading="lazy" />
+            <!-- Row 1 Right: Two Stacked Tiles (228px + 24px gap + 228px = 480px exact match) -->
+            <div class="col-lg-4">
+                <div class="row g-4">
+                    <div class="col-md-6 col-lg-12" data-aos="fade-up" data-aos-duration="750" data-aos-delay="100">
+                        <div class="gallery-tile gallery-tile-sm position-relative overflow-hidden rounded-4 shadow-sm" data-img="/images/hero/slide-2.jpg" data-title="Cascading Balconies & Sky Gardens" data-category="Eco-Architecture">
+                            <img src="/images/hero/slide-2.jpg" alt="Cascading Balconies & Sky Gardens" class="gallery-tile-img w-100 h-100" loading="lazy" />
+                            <div class="gallery-tile-overlay"></div>
+                            <div class="gallery-tile-content">
+                                <span class="badge bg-success bg-opacity-90 text-white rounded-pill px-3 py-1 small mb-2">Eco-Architecture</span>
+                                <h5 class="text-white fw-bold font-serif mb-1 text-shadow-sm">Sky Gardens &amp; Balconies</h5>
+                                <p class="text-white text-opacity-80 small mb-0">Biophilic facade integration with natural sunlight.</p>
+                            </div>
+                            <div class="gallery-tile-zoom-icon">
+                                <i class="bi bi-arrows-fullscreen"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-lg-12" data-aos="fade-up" data-aos-duration="750" data-aos-delay="200">
+                        <div class="gallery-tile gallery-tile-sm position-relative overflow-hidden rounded-4 shadow-sm" data-img="/images/hero/slide-3.jpg" data-title="Sunlit Panoramic Duplex Living" data-category="Living Interior">
+                            <img src="/images/hero/slide-3.jpg" alt="Sunlit Panoramic Duplex Living" class="gallery-tile-img w-100 h-100" loading="lazy" />
+                            <div class="gallery-tile-overlay"></div>
+                            <div class="gallery-tile-content">
+                                <span class="badge bg-warning text-dark rounded-pill px-3 py-1 small mb-2 fw-semibold">Living Interior</span>
+                                <h5 class="text-white fw-bold font-serif mb-1 text-shadow-sm">Sunlit Duplex Living</h5>
+                                <p class="text-white text-opacity-80 small mb-0">High-ceiling panoramic residences by Recent Living Interior.</p>
+                            </div>
+                            <div class="gallery-tile-zoom-icon">
+                                <i class="bi bi-arrows-fullscreen"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Row 2: Three Equal Architectural Tiles -->
+            <div class="col-md-4" data-aos="fade-up" data-aos-duration="750" data-aos-delay="150">
+                <div class="gallery-tile gallery-tile-sm position-relative overflow-hidden rounded-4 shadow-sm" data-img="/images/properties/recent-renu-garden.jpg" data-title="Recent Renu Garden" data-category="Commercial + Residential">
+                    <img src="/images/properties/recent-renu-garden.jpg" alt="Recent Renu Garden" class="gallery-tile-img w-100 h-100" style="object-position: center 20%;" loading="lazy" />
                     <div class="gallery-tile-overlay"></div>
                     <div class="gallery-tile-content">
-                        <span class="badge bg-success bg-opacity-90 text-white rounded-pill px-3 py-1 small mb-2">Eco-Architecture</span>
-                        <h5 class="text-white fw-bold font-serif mb-1 text-shadow-sm">Sky Gardens & Balconies</h5>
-                        <p class="text-white text-opacity-80 small mb-0">Biophilic facade integration with natural sunlight.</p>
+                        <span class="badge bg-primary bg-opacity-90 text-white rounded-pill px-3 py-1 small mb-2">Recent Living Ltd.</span>
+                        <h5 class="text-white fw-bold font-serif mb-1 text-shadow-sm">Recent Renu Garden</h5>
+                        <p class="text-white text-opacity-80 small mb-0">8-Katha East-Facing B+G+08 Floors in Uttara, Dhaka.</p>
                     </div>
                     <div class="gallery-tile-zoom-icon">
                         <i class="bi bi-arrows-fullscreen"></i>
@@ -280,29 +315,12 @@
                 </div>
             </div>
 
-            <!-- Item 3 -->
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-duration="750" data-aos-delay="200">
-                <div class="gallery-tile gallery-tile-sm position-relative overflow-hidden rounded-4 shadow-sm" data-img="/images/hero/slide-3.jpg" data-title="Sunlit Panoramic Duplex Living" data-category="Living Interior">
-                    <img src="/images/hero/slide-3.jpg" alt="Sunlit Panoramic Duplex Living" class="gallery-tile-img w-100 h-100" loading="lazy" />
-                    <div class="gallery-tile-overlay"></div>
-                    <div class="gallery-tile-content">
-                        <span class="badge bg-warning text-dark rounded-pill px-3 py-1 small mb-2 fw-semibold">Living Interior</span>
-                        <h5 class="text-white fw-bold font-serif mb-1 text-shadow-sm">Sunlit Duplex Living</h5>
-                        <p class="text-white text-opacity-80 small mb-0">High-ceiling panoramic residences by Recent Living Interior.</p>
-                    </div>
-                    <div class="gallery-tile-zoom-icon">
-                        <i class="bi bi-arrows-fullscreen"></i>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Item 4 -->
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-duration="750" data-aos-delay="300">
-                <div class="gallery-tile gallery-tile-sm position-relative overflow-hidden rounded-4 shadow-sm" data-img="/images/properties/ee4dd91d78dc463ebbf64690d524b4a7.jpg" data-title="Recent Jahanara Garden" data-category="Recent Living Ltd.">
+            <div class="col-md-4" data-aos="fade-up" data-aos-duration="750" data-aos-delay="250">
+                <div class="gallery-tile gallery-tile-sm position-relative overflow-hidden rounded-4 shadow-sm" data-img="/images/properties/ee4dd91d78dc463ebbf64690d524b4a7.jpg" data-title="Recent Jahanara Garden" data-category="Recent Properties Ltd">
                     <img src="/images/properties/ee4dd91d78dc463ebbf64690d524b4a7.jpg" alt="Recent Jahanara Garden" class="gallery-tile-img w-100 h-100" loading="lazy" />
                     <div class="gallery-tile-overlay"></div>
                     <div class="gallery-tile-content">
-                        <span class="badge bg-success bg-opacity-90 text-white rounded-pill px-3 py-1 small mb-2">Recent Living Ltd.</span>
+                        <span class="badge bg-success bg-opacity-90 text-white rounded-pill px-3 py-1 small mb-2">Recent Properties Ltd</span>
                         <h5 class="text-white fw-bold font-serif mb-1 text-shadow-sm">Recent Jahanara Garden</h5>
                         <p class="text-white text-opacity-80 small mb-0">Modern residential apartments with open balconies.</p>
                     </div>
@@ -312,15 +330,14 @@
                 </div>
             </div>
 
-            <!-- Item 5 -->
-            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-duration="750" data-aos-delay="400">
-                <div class="gallery-tile gallery-tile-sm position-relative overflow-hidden rounded-4 shadow-sm" data-img="/images/properties/02e9019e481a4f928dfdcc8f581c0c77.jpeg" data-title="Recent Renu Garden" data-category="Recent Living Ltd.">
-                    <img src="/images/properties/02e9019e481a4f928dfdcc8f581c0c77.jpeg" alt="Recent Renu Garden" class="gallery-tile-img w-100 h-100" loading="lazy" />
+            <div class="col-md-4" data-aos="fade-up" data-aos-duration="750" data-aos-delay="350">
+                <div class="gallery-tile gallery-tile-sm position-relative overflow-hidden rounded-4 shadow-sm" data-img="/images/properties/0707b73aa4b64accb4aa17cf5380639f.jpg" data-title="Takowa Recent Park" data-category="Recent Living Ltd.">
+                    <img src="/images/properties/0707b73aa4b64accb4aa17cf5380639f.jpg" alt="Takowa Recent Park" class="gallery-tile-img w-100 h-100" loading="lazy" />
                     <div class="gallery-tile-overlay"></div>
                     <div class="gallery-tile-content">
                         <span class="badge bg-primary bg-opacity-90 text-white rounded-pill px-3 py-1 small mb-2">Recent Living Ltd.</span>
-                        <h5 class="text-white fw-bold font-serif mb-1 text-shadow-sm">Recent Renu Garden</h5>
-                        <p class="text-white text-opacity-80 small mb-0">Premium quality engineering and thoughtful residential architecture.</p>
+                        <h5 class="text-white fw-bold font-serif mb-1 text-shadow-sm">Takowa Recent Park</h5>
+                        <p class="text-white text-opacity-80 small mb-0">Thoughtfully crafted urban sanctuary in Dakshinkhan.</p>
                     </div>
                     <div class="gallery-tile-zoom-icon">
                         <i class="bi bi-arrows-fullscreen"></i>
@@ -353,12 +370,12 @@
 </div>
 
 <!-- Joint Venture Section for Landowners -->
-<section id="joint-venture" class="py-5 border-top">
+<section id="joint-venture" class="py-5">
     <div class="container py-lg-4">
         <div class="glass-card p-4 p-lg-5 shadow-lg" data-aos="zoom-in">
             <div class="row g-5 align-items-center">
                 <div class="col-lg-5">
-                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-1 fw-bold small mb-3">Joint Venture Opportunity</span>
+                    <span class="badge-editorial d-inline-block mb-3">Joint Venture Opportunity</span>
                     <h2 class="display-6 fw-bold mb-3 font-serif">Landowner Partnerships</h2>
                     <p class="text-muted mb-4 lh-lg">
                         At <strong>Recent Living Ltd.</strong>, we bring together landowners, investors, professionals, architects, and engineers to transform prime plots into successful real estate landmarks.

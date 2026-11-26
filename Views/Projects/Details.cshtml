@@ -335,7 +335,7 @@
                     @foreach (var sim in Model.SimilarProjects)
                     {
                         <div class="col-md-4">
-                            <div class="card h-100 glass-card glass-card-hover border-0 overflow-hidden d-flex flex-column project-card-modern">
+                            <div class="card h-100 glass-card glass-card-hover overflow-hidden d-flex flex-column project-card-modern">
                                 <div class="project-card-image-wrap position-relative overflow-hidden">
                                     <img src="@(sim.PrimaryImage?.ImagePath ?? "/images/properties/lumina-1.svg")" alt="@sim.Name" class="w-100 h-100 project-card-img" loading="lazy" />
                                     <div class="position-absolute top-0 start-0 m-3">
