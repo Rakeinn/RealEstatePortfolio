@@ -689,6 +689,16 @@ h1, h2, h3, .font-serif, .editorial-heading {
   background: var(--bg-nav) !important;
 }
 
+.brand-logo-img {
+  transition: background-color 0.25s ease, padding 0.25s ease;
+}
+
+[data-bs-theme="dark"] .brand-logo-img {
+  background: rgba(255, 255, 255, 0.94);
+  padding: 4px 10px;
+  border-radius: 8px;
+}
+
 [data-bs-theme="light"] .navbar.navbar-scrolled {
   background: rgba(255, 255, 255, 0.95) !important;
   box-shadow: 0 10px 25px -10px rgba(0, 0, 0, 0.1);
